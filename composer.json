@@ -7,5 +7,7 @@
             "email": "admirkrilasevic@gmail.com"
         }
     ],
-    "require": {}
+    "require": {
+        "twbs/bootstrap": "^4.6"
+    }
 }
