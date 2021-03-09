@@ -1,0 +1,11 @@
+{
+    "name": "yoga/foodblog",
+    "license": "Apache2",
+    "authors": [
+        {
+            "name": "admirkrilasevic",
+            "email": "admirkrilasevic@gmail.com"
+        }
+    ],
+    "require": {}
+}
