@@ -7,16 +7,12 @@ require_once dirname(__FILE__). "/dao/UserDao.class.php";
 
 $user_dao = new UserDao();
 
-//$user = $user_dao->get_user_by_id(3);
-
 $user1 = [
   "password" => "123"
   "name" => "Admir Krilasevic"
 ];
 
-$user = $user_dao->update_user_by_email("fare@stu.ibu.edu.ba", $user1);
-
-//$user_dao->get_user_by_email("dino.keco@gmail.com");
+$user = $user_dao->update_user_by_email("admir@stu.ibu.edu.ba", $user1);
 
 print_r($user);
 
