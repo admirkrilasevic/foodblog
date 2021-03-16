@@ -21,7 +21,7 @@ class BaseDao
 
   }
 
-  public function update($table, $id, $entity, $id_column = "id"){
+  public function execute_update($table, $id, $entity, $id_column = "id"){
     $query = "UPDATE ${table} SET ";
     foreach($entity as $name => $value){
       $query .= $name ."= :". $name. ", ";
