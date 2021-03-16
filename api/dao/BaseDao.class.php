@@ -20,11 +20,26 @@ class BaseDao
 
   }
 
-  function insert(){
+  protected function insert(){
+    $query = "INSERT INTO ${table} (";
+    foreach ($entity as $column => $value) {
+      $query .= $column.", ";
+    }
+    $query = substr($query, 0, -2);
+    $query .= ") VALUES (";
+    foreach ($entity as $column => $value) {
+      $query .= ":".$column.", ";
+    }
+    $query = substr($query, 0, -2);
+    $query .= ")";
 
+    $stmt= $this->connection->prepare($query);
+    $stmt->execute($entity);
+    $entity['id'] = $this->connection->lastInsertId();
+    return $entity;
   }
 
-  public function execute_update($table, $id, $entity, $id_column = "id"){
+  protected function execute_update($table, $id, $entity, $id_column = "id"){
     $query = "UPDATE ${table} SET ";
     foreach($entity as $name => $value){
       $query .= $name ."= :". $name. ", ";
@@ -37,13 +52,13 @@ class BaseDao
     $stmt->execute($entity);
   }
 
-  public function query($query, $params){
+  protected function query($query, $params){
     $stmt = $this->connection->prepare($query);
     $stmt->execute($params);
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
   }
 
-  public function query_unique($query, $params){
+  protected function query_unique($query, $params){
     $results = $this->query($query, $params);
     return reset($results);
   }
