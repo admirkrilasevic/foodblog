@@ -8,12 +8,13 @@ require_once dirname(__FILE__). "/dao/UserDao.class.php";
 $user_dao = new UserDao();
 
 $user1 = [
-  "password" => "123"
-  "name" => "Admir Krilasevic"
+  "username"=>"admirkrilasevic",
+  "email"=>"admirkrilasevic@gmail.com",
+  "password"=>"admir123",
+  "admin"=>true
 ];
 
-$user = $user_dao->update_user_by_email("admir@stu.ibu.edu.ba", $user1);
-
+$user = $user_dao->add($user1);
 print_r($user);
 
 ?>
