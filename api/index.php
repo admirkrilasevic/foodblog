@@ -2,6 +2,7 @@
 
 require_once dirname(__FILE__).'/../vendor/autoload.php';
 require_once dirname(__FILE__).'/services/UserService.class.php';
+require_once dirname(__FILE__).'/routes/users.php';
 
 Flight::set('flight.log_errors', TRUE);
 
