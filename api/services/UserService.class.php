@@ -19,20 +19,22 @@ class UserService extends BaseService{
 
   public function register($user){
 
-    $this->dao->beginTransaction();
-
     try {
+      $this->dao->beginTransaction();
 
       $user = parent::add([
         "name" => $user['name'],
         "username" => $user['username'],
         "email" => $user['email'],
         "password" => $user['password'],
-        "admin" => false,
-        "status" => "PENDING",
+        "admin" => "0",
+        "profile_picture" => null,
+        "status" => "pending",
         "token" => md5(random_bytes(16)),
         "created_at" => date(Config::DATE_FORMAT)
       ]);
+
+      $this->dao->commit();
 
     } catch (\Exception $e) {
       $this->dao->rollBack();
@@ -42,7 +44,7 @@ class UserService extends BaseService{
         throw $e;
       }
     }
-      $this->dao->commit();
+
 
     // TODO: send email with some token
 
