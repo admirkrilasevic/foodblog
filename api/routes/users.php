@@ -8,37 +8,6 @@
  * )
  */
 
- /**
-  * @OA\Post(path="/users/register", tags={"user"},
-  *   @OA\RequestBody(description="Basic user info", required=true,
-  *       @OA\MediaType(mediaType="application/json",
-  *    			@OA\Schema(
-  *    				 @OA\Property(property="name", required="true", type="string", example="My Test Account",	description="Name of the user" ),
-  *    				 @OA\Property(property="username", required="true", type="string", example="testaccount",	description="Username of the user" ),
-  *    				 @OA\Property(property="email", required="true", type="string", example="test@account.com",	description="Email of the user" ),
-  *    				 @OA\Property(property="password", required="true", type="string", example="testaccount123",	description="Password of the user" )
-  *          )
-  *       )
-  *     ),
-  *  @OA\Response(response="200", description="Message that user has been created.")
-  * )
-  */
-Flight::route('POST /users/register', function(){
-  $data = Flight::request()->data->getData();
-  Flight::json(Flight::userService()->register($data));
-});
-
-/**
- * @OA\Get(path="/users/confirm/{token}", tags={"user"},
- *     @OA\Parameter(type="string", in="path", name="token", default=123, description="Temporary token for activating account"),
- *     @OA\Response(response="200", description="Message upon successful user activation.")
- * )
- */
-Flight::route('GET /users/confirm/@token', function($token){
-  Flight::userService()->confirm($token);
-  Flight::json(["message" => "Your account has been activated"]);
-});
-
 /**
  * @OA\Get(path="/users", tags={"user"},
  *     @OA\Parameter(type="integer", in="query", name="offset", default=0, description="Offset for pagination"),
@@ -88,5 +57,91 @@ Flight::route('PUT /users/@id', function($id){
   Flight::json(Flight::userService()->update($id, $data));
 });
 
+/**
+ * @OA\Post(path="/users/register", tags={"user"},
+ *   @OA\RequestBody(description="Basic user info", required=true,
+ *       @OA\MediaType(mediaType="application/json",
+ *    			@OA\Schema(
+ *    				 @OA\Property(property="name", required="true", type="string", example="My Test Account",	description="Name of the user" ),
+ *    				 @OA\Property(property="username", required="true", type="string", example="testaccount",	description="Username of the user" ),
+ *    				 @OA\Property(property="email", required="true", type="string", example="test@account.com",	description="Email of the user" ),
+ *    				 @OA\Property(property="password", required="true", type="string", example="testaccount123",	description="Password of the user" )
+ *          )
+ *       )
+ *     ),
+ *  @OA\Response(response="200", description="Message that user has been created.")
+ * )
+ */
+Flight::route('POST /users/register', function(){
+ $data = Flight::request()->data->getData();
+ Flight::json(Flight::userService()->register($data));
+});
+
+/**
+* @OA\Get(path="/users/confirm/{token}", tags={"user"},
+*     @OA\Parameter(type="string", in="path", name="token", default=123, description="Temporary token for activating account"),
+*     @OA\Response(response="200", description="Message upon successful user activation.")
+* )
+*/
+Flight::route('GET /users/confirm/@token', function($token){
+ Flight::userService()->confirm($token);
+ Flight::json(["message" => "Your account has been activated"]);
+});
+
+/**
+ * @OA\Post(path="/users/login", tags={"user"},
+ *   @OA\RequestBody(description="Basic user info", required=true,
+ *       @OA\MediaType(mediaType="application/json",
+ *    			@OA\Schema(
+ *    				 @OA\Property(property="email", required="true", type="string", example="myemail@gmail.com",	description="User's email address" ),
+ *             @OA\Property(property="password", required="true", type="string", example="12345",	description="Password" )
+ *          )
+ *       )
+ *     ),
+ *  @OA\Response(response="200", description="Message that user has been created.")
+ * )
+ */
+Flight::route('POST /users/login', function(){
+  $data = Flight::request()->data->getData();
+  Flight::json(Flight::userService()->login($data));
+});
+
+
+/**
+ * @OA\Post(path="/users/forgot", tags={"user"}, description="Send recovery URL to user's email address",
+ *   @OA\RequestBody(description="Basic user info", required=true,
+ *       @OA\MediaType(mediaType="application/json",
+ *    			@OA\Schema(
+ *    				 @OA\Property(property="email", required="true", type="string", example="myemail@gmail.com",	description="User's email address" )
+ *          )
+ *       )
+ *     ),
+ *  @OA\Response(response="200", description="Message that recovery link has been sent.")
+ * )
+ */
+Flight::route('POST /users/forgot', function(){
+  $data = Flight::request()->data->getData();
+  Flight::userService()->forgot($data);
+  Flight::json(["message" => "Recovery link has been sent to your email"]);
+});
+
+/**
+ * @OA\Post(path="/users/reset", tags={"user"}, description="Reset user's password using recovery token",
+ *   @OA\RequestBody(description="Basic user info", required=true,
+ *       @OA\MediaType(mediaType="application/json",
+ *    			@OA\Schema(
+ *    				 @OA\Property(property="token", required="true", type="string", example="123",	description="Recovery token" ),
+ *    				 @OA\Property(property="password", required="true", type="string", example="123",	description="New password" )
+ *          )
+ *       )
+ *     ),
+ *  @OA\Response(response="200", description="Message that user has changed password.")
+ * )
+ */
+Flight::route('POST /users/reset', function(){
+  $data = Flight::request()->data->getData();
+  Flight::userService()->reset($data);
+  Flight::json(["message" => "Your password has been changed"]);
+});
 
 ?>
