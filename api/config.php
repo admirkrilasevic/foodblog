@@ -5,6 +5,12 @@ class Config{
   const DB_USERNAME = "root";
   const DB_PASSWORD = "";
   const DB_SCHEME = "foodblog";
+
+  const SMTP_HOST = "smtp.gmail.com";
+  const SMTP_PORT = 587;
+  const SMTP_ENCRYPT = "tls";
+  const SMTP_USER = "admirkrilasevic@gmail.com";
+  const SMTP_PASSWORD = "";
 }
 
  ?>
