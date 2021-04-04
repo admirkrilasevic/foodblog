@@ -42,7 +42,7 @@ class UserService extends BaseService{
 
     } catch (\Exception $e) {
       $this->dao->rollBack();
-      if (str_contains($e->getMessage(), 'users.uq_user_email')) {
+      if (str_contains($e->getMessage(), 'users.uk_user_email')) {
         throw new Exception("Account with same email exists in the database", 400, $e);
       }else{
         throw $e;
@@ -58,7 +58,6 @@ class UserService extends BaseService{
     $user = $this->dao->get_user_by_token($token);
     if (!isset($user['id'])) throw Exception("Invalid token");
     $this->dao->update($user['id'], ["status" => "ACTIVE"]);
-    $this->accountDao->update($user['account_id'], ["status" => "ACTIVE"]);
   }
 
   public function login($user){

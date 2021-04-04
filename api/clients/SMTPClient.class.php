@@ -10,8 +10,7 @@ class SMTPClient {
   public function __construct(){
     $transport = (new Swift_SmtpTransport(Config::SMTP_HOST, Config::SMTP_PORT, Config::SMTP_ENCRYPT))
       ->setUsername(Config::SMTP_USER)
-      ->setPassword(Config::SMTP_PASSWORD)
-    ;
+      ->setPassword(Config::SMTP_PASSWORD);
 
     $this->mailer = new Swift_Mailer($transport);
   }
