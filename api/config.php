@@ -9,7 +9,7 @@ class Config{
   const SMTP_HOST = "smtp.gmail.com";
   const SMTP_PORT = 587;
   const SMTP_ENCRYPT = "tls";
-  const SMTP_USER = "admirkrilasevic@gmail.com";
+  const SMTP_USER = "admir.krilasevic@stu.ibu.edu.ba";
   const SMTP_PASSWORD = "";
 }
 
