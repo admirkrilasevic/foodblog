@@ -63,11 +63,11 @@ Flight::route('PUT /admin/users/@id', function($id){
 //user functions
 
 /**
- * @OA\Get(path="/user", tags={"user"}, security={{"ApiKeyAuth": {}}},
+ * @OA\Get(path="/user/info", tags={"user"}, security={{"ApiKeyAuth": {}}},
  *     @OA\Response(response="200", description="Fetch user account")
  * )
  */
-Flight::route('GET /user', function(){
+Flight::route('GET /user/info', function(){
   Flight::json(Flight::userService()->get_by_id(Flight::get('user')['id']));
 });
 
