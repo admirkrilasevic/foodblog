@@ -11,6 +11,9 @@ class Config{
   const SMTP_ENCRYPT = "tls";
   const SMTP_USER = "admir.krilasevic@stu.ibu.edu.ba";
   const SMTP_PASSWORD = "";
+
+  const JWT_SECRET = "nbf3095zn64";
+  const JWT_TOKEN_TIME = 604800;
 }
 
  ?>

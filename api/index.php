@@ -19,6 +19,18 @@ Flight::map('query', function($name, $default_value = NULL){
   return $query_param;
 });
 
+/* utility function for getting header parameters */
+Flight::map('header', function($name){
+  $headers = getallheaders();
+  return @$headers[$name];
+});
+
+/* utility function for generating JWT token */
+Flight::map('jwt', function($user){
+  $jwt = \Firebase\JWT\JWT::encode(["exp" => (time() + Config::JWT_TOKEN_TIME), "id" => $user["id"], "a" => $user["admin"]], Config::JWT_SECRET);
+  return ["token" => $jwt];
+});
+
 /* swagger documentation */
 Flight::route('GET /swagger', function(){
   $openapi = @\OpenApi\scan(dirname(__FILE__)."/routes");
@@ -34,6 +46,7 @@ Flight::route('GET /', function(){
 Flight::register('userService', 'UserService');
 
 /* include all routes */
+require_once dirname(__FILE__)."/routes/middleware.php";
 require_once dirname(__FILE__)."/routes/users.php";
 
 Flight::start();
