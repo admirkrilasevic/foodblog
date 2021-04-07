@@ -9,10 +9,9 @@
  * @OA\SecurityScheme(securityScheme="ApiKeyAuth", type="apiKey", in="header", name="Authentication" )
  */
 
- //admin functions
 
 /**
- * @OA\Get(path="/admin/users", tags={"admin"}, security={{"ApiKeyAuth": {}}},
+ * @OA\Get(path="/admin/users", tags={"x-admin","user"}, security={{"ApiKeyAuth": {}}},
  *     @OA\Parameter(type="integer", in="query", name="offset", default=0, description="Offset for pagination"),
  *     @OA\Parameter(type="integer", in="query", name="limit", default=25, description="Limit for pagination"),
  *     @OA\Parameter(type="string", in="query", name="search", description="Search string for users. Case insensitive search."),
@@ -30,7 +29,7 @@ Flight::route('GET /admin/users', function(){
 });
 
 /**
- * @OA\Get(path="/admin/users/{id}", tags={"admin"}, security={{"ApiKeyAuth": {}}},
+ * @OA\Get(path="/admin/users/{id}", tags={"x-admin","user"}, security={{"ApiKeyAuth": {}}},
  *     @OA\Parameter(@OA\Schema(type="integer"), in="path", name="id", default=1, description="Id of user"),
  *     @OA\Response(response="200", description="Fetch individual user")
  * )
@@ -40,7 +39,7 @@ Flight::route('GET /admin/users/@id', function($id){
 });
 
 /**
- * @OA\Put(path="/admin/users/{id}", tags={"admin"}, security={{"ApiKeyAuth": {}}},
+ * @OA\Put(path="/admin/users/{id}", tags={"x-admin","user"}, security={{"ApiKeyAuth": {}}},
  *   @OA\Parameter(@OA\Schema(type="integer"), in="path", name="id", default=1),
  *   @OA\RequestBody(description="Basic user info that is going to be updated", required=true,
  *       @OA\MediaType(mediaType="application/json",
@@ -60,15 +59,35 @@ Flight::route('PUT /admin/users/@id', function($id){
   Flight::json(Flight::userService()->update($id, $data));
 });
 
-//user functions
+/**
+ * @OA\Put(path="/user/info", tags={"x-user","user"}, security={{"ApiKeyAuth": {}}},
+ *   @OA\Parameter(@OA\Schema(type="integer"), in="path", name="id", default=1),
+ *   @OA\RequestBody(description="Basic user info that is going to be updated", required=true,
+ *       @OA\MediaType(mediaType="application/json",
+ *    			@OA\Schema(
+ *    				 @OA\Property(property="name", required="true", type="string", example="My Test Account",	description="Name of the user" ),
+ *    				 @OA\Property(property="username", required="true", type="string", example="testaccount",	description="Username of the user" ),
+ *    				 @OA\Property(property="email", required="true", type="string", example="test@account.com",	description="Email of the user" ),
+ *    				 @OA\Property(property="password", required="true", type="string", example="testaccount123",	description="Password of the user" )
+ *          )
+ *       )
+ *     ),
+ *     @OA\Response(response="200", description="Update user based on id")
+ * )
+ */
+ Flight::route('PUT /user/info', function(){
+  $data = Flight::request()->data->getData();
+  Flight::json(Flight::userService()->update(Flight::get("user")["id"],$data));
+});
+
 
 /**
- * @OA\Get(path="/user/info", tags={"user"}, security={{"ApiKeyAuth": {}}},
+ * @OA\Get(path="/user/info", tags={"x-user","user"}, security={{"ApiKeyAuth": {}}},
  *     @OA\Response(response="200", description="Fetch user account info")
  * )
  */
 Flight::route('GET /user/info', function(){
-  Flight::json(Flight::userService()->get_by_id(Flight::get('user')['id']));
+  Flight::json(Flight::userService()->get_by_id(Flight::get("user")["id"]));
 });
 
 
