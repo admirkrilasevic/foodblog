@@ -31,7 +31,7 @@ class UserService extends BaseService{
         "username" => $user['username'],
         "email" => $user['email'],
         "password" => md5($user['password']),
-        "admin" => "0",
+        "role" => "USER",
         "profile_picture" => null,
         "status" => "pending",
         "token" => md5(random_bytes(16)),
@@ -42,7 +42,7 @@ class UserService extends BaseService{
 
     } catch (\Exception $e) {
       $this->dao->rollBack();
-      if (str_contains($e->getMessage(), 'users.uk_user_email')) {
+      if (str_contains($e->getMessage(), 'users.uq_user_email')) {
         throw new Exception("Account with same email exists in the database", 400, $e);
       }else{
         throw $e;
