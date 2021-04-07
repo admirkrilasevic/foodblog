@@ -1,4 +1,7 @@
+<h1> Admir Cooks </h1>
+
 <?php
 
-echo "Hello";
+echo "Website coming soon...";
+
 ?>
