@@ -1,10 +1,10 @@
 <?php
 
-require_once dirname(__FILE__).".../BaseDao.class.php"
+require_once dirname(__FILE__).".../BaseDao.class.php";
 
-public class CategoryDao extends BaseDao{
+class CategoryDao extends BaseDao{
 
-  public __construct(){
+  public function __construct(){
     parent::__construct("categories");
   }
 }
