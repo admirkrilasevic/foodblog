@@ -17,11 +17,18 @@ class Config{
     return Config::get_env("DB_PORT", "3306");
   }
 
-  const SMTP_HOST = "smtp.gmail.com";
-  const SMTP_PORT = 587;
-  const SMTP_ENCRYPT = "tls";
-  const SMTP_USER = "admir.krilasevic@stu.ibu.edu.ba";
-  const SMTP_PASSWORD = "";
+  public static function SMTP_HOST(){
+    return Config::get_env("SMTP_HOST", "smtp.gmail.com");
+  }
+  public static function SMTP_PORT(){
+    return Config::get_env("SMTP_PORT", "587");
+  }
+  public static function SMTP_USER(){
+    return Config::get_env("SMTP_USER", NULL);
+  }
+  public static function SMTP_PASSWORD(){
+    return Config::get_env("SMTP_PASSWORD", NULL);
+  }
 
   const JWT_SECRET = "nbf3095zn64";
   const JWT_TOKEN_TIME = 604800;
