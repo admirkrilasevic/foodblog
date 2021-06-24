@@ -1,12 +1,12 @@
 <?php
 /**
- * @OA\Post(path="/admin/recipes", tags={"recipes"}, security={{"ApiKeyAuth": {}}},
+ * @OA\Post(path="/admin/recipes", tags={"recipes", "x-admin"}, security={{"ApiKeyAuth": {}}},
  *   @OA\RequestBody(description="Adding a recipe", required=true,
  *       @OA\MediaType(mediaType="application/json",
  *    			@OA\Schema(
  *    				 @OA\Property(property="title", required="true", type="string", example="Cheesecake",	description="Title of the recipe" ),
  *    				 @OA\Property(property="time_req", required="true", type="string", example="1 hour",	description="Time for the recipe" ),
- *    				 @OA\Property(property="procedure", required="true", type="string", example="Prepare a baking dish...",	description="Procedure the the recipe" ),
+ *    				 @OA\Property(property="procedure_steps", required="true", type="string", example="Prepare a baking dish...",	description="Procedure the the recipe" ),
  *    				 @OA\Property(property="ingredients", required="true", type="string", example="100g of cream cheese...",	description="Ingredients for the recipe" )
  *          )
  *       )
@@ -20,7 +20,7 @@ Flight::route('POST /admin/recipes', function(){
 });
 
 /**
- * @OA\Get(path="/admin/recipes", tags={"recipes"}, security={{"ApiKeyAuth": {}}},
+ * @OA\Get(path="/admin/recipes", tags={"recipes", "x-admin"}, security={{"ApiKeyAuth": {}}},
  *     @OA\Parameter(type="integer", in="query", name="offset", default=0, description="Offset for pagination"),
  *     @OA\Parameter(type="integer", in="query", name="limit", default=25, description="Limit for pagination"),
  *     @OA\Parameter(type="string", in="query", name="search", description="Search string for recipes. Case insensitive search."),
@@ -38,7 +38,7 @@ Flight::route('GET /admin/recipes', function(){
 });
 
 /**
- * @OA\Get(path="/admin/recipes/{id}", tags={"recipes"}, security={{"ApiKeyAuth": {}}},
+ * @OA\Get(path="/admin/recipes/{id}", tags={"recipes", "x-admin"}, security={{"ApiKeyAuth": {}}},
  *     @OA\Parameter(@OA\Schema(type="integer"), in="path", name="id", default=1, description="Id of recipe"),
  *     @OA\Response(response="200", description="Fetch individual recipe")
  * )
@@ -48,14 +48,14 @@ Flight::route('GET /admin/recipes/@id', function($id){
 });
 
 /**
- * @OA\Put(path="/admin/recipes/{id}", tags={"recipes"}, security={{"ApiKeyAuth": {}}},
+ * @OA\Put(path="/admin/recipes/{id}", tags={"recipes", "x-admin"}, security={{"ApiKeyAuth": {}}},
  *   @OA\Parameter(@OA\Schema(type="integer"), in="path", name="id", default=1),
  *   @OA\RequestBody(description="Basic recipe info that is going to be updated", required=true,
  *       @OA\MediaType(mediaType="application/json",
  *    			@OA\Schema(
  *    				 @OA\Property(property="title", required="true", type="string", example="Cheesecake",	description="Title of the recipe" ),
- *    				 @OA\Property(property="time", required="true", type="string", example="1 hour",	description="Time for the recipe" ),
- *    				 @OA\Property(property="procedure", required="true", type="string", example="Prepare a baking dish...",	description="Procedure the the recipe" ),
+ *    				 @OA\Property(property="time_req", required="true", type="string", example="1 hour",	description="Time for the recipe" ),
+ *    				 @OA\Property(property="procedure_steps", required="true", type="string", example="Prepare a baking dish...",	description="Procedure the the recipe" ),
  *    				 @OA\Property(property="ingredients", required="true", type="string", example="100g of cream cheese...",	description="Ingredients for the recipe" )
  *          )
  *       )

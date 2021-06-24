@@ -128,8 +128,8 @@ Flight::route('GET /confirm/@token', function($token){
  *   @OA\RequestBody(description="Basic user info", required=true,
  *       @OA\MediaType(mediaType="application/json",
  *    			@OA\Schema(
- *    				 @OA\Property(property="email", required="true", type="string", example="myemail@gmail.com",	description="User's email address" ),
- *             @OA\Property(property="password", required="true", type="string", example="12345",	description="Password" )
+ *    				 @OA\Property(property="email", required="true", type="string", example="admir.krilasevic@stu.ibu.edu.ba",	description="User's email address" ),
+ *             @OA\Property(property="password", required="true", type="string", example="admir123",	description="Password" )
  *          )
  *       )
  *     ),

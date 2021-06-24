@@ -19,14 +19,14 @@ class RecipeService extends BaseService{
 
   public function add_recipe($recipe){
 
-      $recipe = [
+      $data= [
         "title" => $recipe['title'],
         "time_req" => $recipe['time_req'],
-        "procedure" => $recipe['procedure'],
-        "ingredients" => $recipe['ingredients'],
+        "procedure_steps" => $recipe['procedure_steps'],
+        "ingredients" => $recipe['ingredients']
       ];
+       return parent::add($data);
 
-      return parent::add($recipe);
   }
 
 
