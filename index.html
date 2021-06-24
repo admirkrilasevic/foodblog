@@ -7,7 +7,7 @@
         <meta name="description" content="">
         <meta name="author" content="">
 
-        <title>Startmin - Bootstrap Admin Theme</title>
+        <title>Admir Cooks</title>
 
         <!-- Bootstrap Core CSS -->
         <link href="./assets/css/bootstrap.min.css" rel="stylesheet">
@@ -44,7 +44,7 @@
             <!-- Navigation -->
             <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
                 <div class="navbar-header">
-                    <a class="navbar-brand" href="index.html">Startmin</a>
+                    <a class="navbar-brand" href="index.html">Admir Cooks</a>
                 </div>
 
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -113,9 +113,9 @@
                             </li>
                         </ul>
                     </li>
-                    <li class="dropdown">
+                    <li id="account-dropdown" class="dropdown">
                         <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                            <i class="fa fa-user fa-fw"></i> secondtruth <b class="caret"></b>
+                            <i class="fa fa-user fa-fw"></i> Account <b class="caret"></b>
                         </a>
                         <ul class="dropdown-menu dropdown-user">
                             <li><a href="#"><i class="fa fa-user fa-fw"></i> User Profile</a>
@@ -127,6 +127,9 @@
                             </li>
                         </ul>
                     </li>
+                    <ul class="nav navbar-nav navbar-right navbar-top-links">
+                        <li><a id="sign-in-button" href="login.html"><i class="fa fa-sign-in fa-fw"></i> Sign in</a></li>
+                    </ul>
                 </ul>
                 <!-- /.navbar-top-links -->
 
@@ -269,17 +272,19 @@
 
         <!-- Custom Theme JavaScript -->
         <script src="./assets/js/startmin.js"></script>
-        
+
         <script type="text/javascript">
           $(document).ready(function() {
             var app = $.jQuerySPApp({defaultView  : "dashboard"});
 
-            app.route({view: 'dashboard', load: 'dashboard.html' });
-            app.route({view: 'tables', load: 'tables.html' });
-            app.route({view: 'notifications', load: 'notifications.html' });
-
-
             app.run();
+
+            if (!window.localStorage.getItem("token")){
+              document.getElementById("account-dropdown").style.display = "none";
+            };
+            if(window.localStorage.getItem("token")){
+              document.getElementById("sign-in-button").style.display = "none";
+            };
           });
         </script>
 
