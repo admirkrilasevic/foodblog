@@ -2,6 +2,7 @@
 
 require_once dirname(__FILE__).'/../vendor/autoload.php';
 require_once dirname(__FILE__).'/services/UserService.class.php';
+require_once dirname(__FILE__).'/services/RecipeService.class.php';
 
 Flight::set('flight.log_errors', TRUE);
 
@@ -43,10 +44,12 @@ Flight::route('GET /', function(){
 
 /* register Business Logic layer services */
 Flight::register('userService', 'UserService');
+Flight::register('recipeService', 'RecipeService');
 
 /* include all routes */
 require_once dirname(__FILE__)."/routes/middleware.php";
 require_once dirname(__FILE__)."/routes/users.php";
+require_once dirname(__FILE__)."/routes/recipes.php";
 
 Flight::start();
 
