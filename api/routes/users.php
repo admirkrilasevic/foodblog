@@ -156,7 +156,7 @@ Flight::route('POST /login', function(){
 Flight::route('POST /forgot', function(){
   $data = Flight::request()->data->getData();
   Flight::userService()->forgot($data);
-  Flight::json(["message" => "Recovery link has been sent to your email"]);
+  Flight::json(["message" => "Recovery token has been sent to your email"]);
 });
 
 /**
