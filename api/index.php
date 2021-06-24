@@ -3,10 +3,11 @@
 require_once dirname(__FILE__).'/../vendor/autoload.php';
 require_once dirname(__FILE__).'/services/UserService.class.php';
 require_once dirname(__FILE__).'/services/RecipeService.class.php';
+require_once dirname(__FILE__).'/services/PostService.class.php';
 
 Flight::set('flight.log_errors', TRUE);
 
-/* error handling for our API 
+/* error handling for our API
 Flight::map('error', function(Exception $ex){
   Flight::json(["message" => $ex->getMessage()], $ex->getCode() ? $ex->getCode() : 500);
 });
@@ -45,11 +46,13 @@ Flight::route('GET /', function(){
 /* register Business Logic layer services */
 Flight::register('userService', 'UserService');
 Flight::register('recipeService', 'RecipeService');
+Flight::register('postService', 'PostService');
 
 /* include all routes */
 require_once dirname(__FILE__)."/routes/middleware.php";
 require_once dirname(__FILE__)."/routes/users.php";
 require_once dirname(__FILE__)."/routes/recipes.php";
+require_once dirname(__FILE__)."/routes/posts.php";
 
 Flight::start();
 
