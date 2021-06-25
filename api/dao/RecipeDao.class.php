@@ -18,6 +18,16 @@ class RecipeDao extends BaseDao{
                        LIMIT ${limit} OFFSET ${offset}",
                        ["title" => strtolower($search)]);
   }
+
+  public function category_exists($name){
+    $value = $this->query("SELECT COUNT(name) AS total FROM categories WHERE name = :name", ["name" => strtolower($name)]);
+    if(($value[0]['total'])!=0){
+      return true;
+    }
+    else{
+      return false;
+    }
+  }
 }
 
  ?>

@@ -18,12 +18,7 @@ class CategoryService extends BaseService{
   }
 
   public function add_category($category){
-
-      $data= [
-        "name" => $category['name'],
-      ];
-       return parent::add($data);
-
+    return $this->dao->add_category($category);
   }
 
 

@@ -4,6 +4,7 @@
  *   @OA\RequestBody(description="Adding a recipe", required=true,
  *       @OA\MediaType(mediaType="application/json",
  *    			@OA\Schema(
+ *             @OA\Property(property="category_name", required="true", type="string", example="Dessert",	description="Recipe category" ),
  *    				 @OA\Property(property="title", required="true", type="string", example="Cheesecake",	description="Title of the recipe" ),
  *    				 @OA\Property(property="time_req", required="true", type="string", example="1 hour",	description="Time for the recipe" ),
  *    				 @OA\Property(property="procedure_steps", required="true", type="string", example="Prepare a baking dish...",	description="Procedure the the recipe" ),
@@ -53,6 +54,7 @@ Flight::route('GET /admin/recipes/@id', function($id){
  *   @OA\RequestBody(description="Basic recipe info that is going to be updated", required=true,
  *       @OA\MediaType(mediaType="application/json",
  *    			@OA\Schema(
+ *             @OA\Property(property="category_name", required="true", type="string", example="Dessert",	description="Recipe category" ),
  *    				 @OA\Property(property="title", required="true", type="string", example="Cheesecake",	description="Title of the recipe" ),
  *    				 @OA\Property(property="time_req", required="true", type="string", example="1 hour",	description="Time for the recipe" ),
  *    				 @OA\Property(property="procedure_steps", required="true", type="string", example="Prepare a baking dish...",	description="Procedure the the recipe" ),

@@ -18,6 +18,15 @@ class CategoryDao extends BaseDao{
                        LIMIT ${limit} OFFSET ${offset}",
                        ["name" => strtolower($search)]);
   }
+
+  public function add_category($category){
+
+      $data= [
+        "name" => $category['name'],
+      ];
+       return parent::add($data);
+
+  }
 }
 
  ?>
