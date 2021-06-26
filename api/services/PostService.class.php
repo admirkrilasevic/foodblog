@@ -9,12 +9,8 @@ class PostService extends BaseService{
     $this->dao = new PostDao();
   }
 
-  public function get_posts($search, $offset, $limit, $order){
-    if ($search){
-      return $this->dao->get_posts($search, $offset, $limit, $order);
-    }else{
-      return $this->dao->get_all($offset, $limit, $order);
-    }
+  public function get_posts($search, $offset, $limit, $order, $total = FALSE){
+    return $this->dao->get_posts($search, $offset, $limit, $order, $total);
   }
 
   public function add_post($post){

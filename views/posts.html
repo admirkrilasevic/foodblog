@@ -7,6 +7,52 @@
             <!-- /.col-lg-12 -->
         </div>
         <!-- /.row -->
+        <div class=row>
+          <button type="button" class="btn btn-success" data-toggle="modal" data-target="#add-post-modal">
+              + Add
+          </button>
+        </div>
+        <div>
+          <br>
+        </div>
+        <div class="modal fade" id="add-post-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <form role="form" id="add-post">
+                    <input type="hidden" name="id" />
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title" id="myModalLabel">Add Post</h4>
+                    </div>
+                    <div class="modal-body">
+                          <div class="form-group">
+                              <label>Recipe ID</label>
+                              <input type="integer" name="recipe_id" class="form-control" placeholder="ID of the recipe">
+                          </div>
+                          <div class="form-group">
+                              <label>Title</label>
+                              <input type="text" name="title" class="form-control" placeholder="Title of the post" required minlength="3">
+                          </div>
+                          <div class="form-group">
+                              <label>Description</label>
+                              <input type="text" name="description" class="form-control" placeholder="Enter text" required minlength="3">
+                          </div>
+
+                          <!--<div class="form-group">
+                              <label>Email Body</label>
+                              <textarea name="body" class="form-control" rows="10" required></textarea>
+                          </div>-->
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save changes</button>
+                    </div>
+                  </form>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
         <div class="row">
             <div>
               <div class="table-responsive">
@@ -14,6 +60,13 @@
                       <thead>
                           <tr>
                               <th>ID</th>
+                              <th>Recipe ID</th>
+                              <th>Title</th>
+                              <th>Description</th>
+                              <th>Time Posted</th>
+                              <th>Image</th>
+                              <th>View count</th>
+                              <th>Average rating</th>
                           </tr>
                       </thead>
                       <tbody>
@@ -30,3 +83,141 @@
     <!-- /.container-fluid -->
 </div>
 <!-- /#page-wrapper -->
+
+<script type="text/javascript">
+
+  $("#add-post").validate({
+    submitHandler: function(form, event) {
+      event.preventDefault();
+      var data = jsonize_form($(form));
+      if (data.id){
+        updatePost(data);
+      }else{
+        addPost(data);
+      }
+    }
+  });
+
+  getPosts();
+
+  function updatePost(post){
+    $.ajax({
+         url: "api/admin/posts/"+post.id,
+         type: "PUT",
+         data: JSON.stringify(post),
+         contentType: "application/json",
+         beforeSend: function(xhr){xhr.setRequestHeader('Authentication', localStorage.getItem("token"));},
+         success: function(data) {
+           toastr.success("Post has been updated");
+           getPosts();
+           $("#add-post").trigger("reset");
+           $("#add-post *[name='id']").val("");
+           $('#add-post-modal').modal("hide");
+         },
+         error: function(jqXHR, textStatus, errorThrown ){
+           toastr.error(jqXHR.responseJSON.message);
+         }
+      });
+  }
+
+  function addPost(post){
+    $.ajax({
+         url: "api/admin/posts",
+         type: "POST",
+         data: JSON.stringify(post),
+         contentType: "application/json",
+         beforeSend: function(xhr){xhr.setRequestHeader('Authentication', localStorage.getItem("token"));},
+         success: function(data) {
+            toastr.success("Post has been created");
+            getPosts();
+            $("#add-post").trigger("reset");
+            $('#add-post-modal').modal("hide");
+         },
+         error: function(jqXHR, textStatus, errorThrown ){
+           toastr.error(jqXHR.responseJSON.message);
+         }
+      });
+  }
+
+  function getRatingForPost(id){
+    let value = $.ajax({
+         url: "api/ratings/get-avg-rating-for-post/"+id,
+         type: "GET",
+         async: false,
+         success: function(data) {
+         }
+      });
+    return value.responseJSON;
+  }
+
+  function getPosts(){
+
+    $("#posts-table").DataTable({
+      processing: true,
+      serverSide: true,
+      bDestroy: true,
+      preDrawCallback: function( settings ) {
+        if ( settings.jqXHR){
+          settings._iRecordsTotal = settings.jqXHR.getResponseHeader('total-posts');
+          settings._iRecordsDisplay = settings.jqXHR.getResponseHeader('total-posts');
+          //$("#dashboard-posts-card").html(settings.jqXHR.getResponseHeader('total-posts'));
+        }
+      },
+      ajax: {
+        url: "api/admin/posts",
+        type: "GET",
+        beforeSend: function(xhr){xhr.setRequestHeader('Authentication', localStorage.getItem("token"));},
+        dataSrc: function(resp){
+          return resp;
+        },
+        data: function ( d ) {
+          d.offset=d.start;
+          d.limit=d.length;
+          d.search = d.search.value;
+          d.order = encodeURIComponent((d.order[0].dir == 'asc' ? "-" : "+")+d.columns[d.order[0].column].data);
+          delete d.start;
+          delete d.length;
+          delete d.columns;
+          delete d.draw;
+        }
+      },
+      columns: [
+            { "data": "id",
+              "render": function ( data, type, row, meta ) {
+                  return '<span class="badge">'+data+'</span><a class="pull-right" style="font-size: 15px; cursor: pointer;" onclick="openEditPostModal('+data+')"><i class="fa fa-edit"></i></a>';
+              }
+            },
+            { "data": "recipe_id" },
+            { "data": "title" },
+            { "data": "description" },
+            { "data": "time_posted" },
+            { "data": "image" },
+            { "data": "view_count" },
+            { "data": "avg_rating",
+              "render": function(data, type, row, meta){
+                return getRatingForPost(row.id);
+              }
+            }
+        ]
+  });
+  }
+
+  function openEditPostModal(id){
+   $.ajax({
+        url: "api/admin/posts/"+id,
+        type: "GET",
+        beforeSend: function(xhr){xhr.setRequestHeader('Authentication', localStorage.getItem("token"));},
+        success: function(data) {
+          $("#add-post *[name='id']").val(data.id);
+          $("#add-post *[name='recipe_id']").val(data.recipe_id);
+          $("#add-post *[name='title']").val(data.title);
+          $("#add-post *[name='description']").val(data.description);
+          $("#myModalLabel").html("Edit post");
+          $("#add-post-modal").modal("show");
+        },
+        error: function(jqXHR, textStatus, errorThrown ){
+          toastr.error(jqXHR.responseJSON.message);
+        }
+     });
+ }
+</script>
