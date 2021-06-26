@@ -50,29 +50,13 @@
       processing: true,
       serverSide: true,
       bDestroy: true,
-      //pagingType: "simple",
       preDrawCallback: function( settings ) {
         if ( settings.jqXHR){
           settings._iRecordsTotal = settings.jqXHR.getResponseHeader('total-records');
           settings._iRecordsDisplay = settings.jqXHR.getResponseHeader('total-records');
+          $("#dashboard-users-card").html(settings.jqXHR.getResponseHeader('total-records'));
         }
-        /*if (settings.aoData.length < settings._iDisplayLength){
-          //disable pagination
-          settings._iRecordsTotal=0;
-          settings._iRecordsDisplay=0;
-        }else{
-          //enable pagination
-          settings._iRecordsTotal=100000000;
-          settings._iRecordsDisplay=1000000000;
-        }*/
       },
-      /*language: {
-            "lengthMenu": "Display _MENU_ records per page",
-            "zeroRecords": "Nothing found - sorry",
-            "info": "Showing page _PAGE_",
-            "infoEmpty": "Last page",
-            "infoFiltered": ""
-      },*/
       ajax: {
         url: "api/admin/users",
         type: "GET",
@@ -104,33 +88,5 @@
             { "data": "token_created_at" }
         ]
   });
-
-    /*$.ajax({
-         url: "api/admin/users/",
-         type: "GET",
-         beforeSend: function(xhr){xhr.setRequestHeader('Authentication', localStorage.getItem("token"));},
-         success: function(data) {
-           console.log(data);
-           var html = "";
-           for(var i = 0; i < data.length; i++){
-             html += '<tr class="odd">'
-                 +'<td>'+data[i].id+'</td>'
-                 +'<td>'+data[i].name+'</td>'
-                 +'<td>'+data[i].username+'</td>'
-                 +'<td>'+data[i].email+'</td>'
-                 +'<td>'+data[i].password+'</td>'
-                 +'<td>'+data[i].role+'</td>'
-                 +'<td>'+data[i].profile_picture+'</td>'
-                 +'<td>'+data[i].status+'</td>'
-                 +'<td>'+data[i].token+'</td>'
-                 +'<td>'+data[i].created_at+'</td>'
-                 +'<td>'+data[i].token_created_at+'</td>';
-           }
-
-           $("#users-table tbody").html(html);
-           $("#users-table").DataTable();
-
-         }
-      });*/
   }
 </script>
