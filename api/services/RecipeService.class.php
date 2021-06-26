@@ -12,12 +12,8 @@ class RecipeService extends BaseService{
     $this->categoryDao = new CategoryDao();
   }
 
-  public function get_recipes($search, $offset, $limit, $order){
-    if ($search){
-      return $this->dao->get_recipes($search, $offset, $limit, $order);
-    }else{
-      return $this->dao->get_all($offset, $limit, $order);
-    }
+  public function get_recipes($search, $offset, $limit, $order, $total = FALSE){
+    return $this->dao->get_recipes($search, $offset, $limit, $order, $total);
   }
 
   public function add_recipe($recipe){

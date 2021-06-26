@@ -7,6 +7,55 @@
             <!-- /.col-lg-12 -->
         </div>
         <!-- /.row -->
+        <div class=row>
+          <button type="button" class="btn btn-success" data-toggle="modal" data-target="#add-recipe-modal">
+              + Add
+          </button>
+        </div>
+        <div>
+          <br>
+        </div>
+        <div class="modal fade" id="add-recipe-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <form role="form" id="add-recipe">
+                    <input type="hidden" name="id" />
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title" id="myRecipeModalLabel">Add Recipe</h4>
+                    </div>
+                    <div class="modal-body">
+                          <div class="form-group">
+                              <label>Category name</label>
+                              <input type="text" name="category_name" class="form-control" placeholder="Recipe category" required minlength="3">
+                          </div>
+                          <div class="form-group">
+                              <label>Title</label>
+                              <input type="text" name="title" class="form-control" placeholder="Title of the recipe" required minlength="3">
+                          </div>
+                          <div class="form-group">
+                              <label>Required time</label>
+                              <input type="text" name="time_req" class="form-control" placeholder="Enter time" required minlength="3">
+                          </div>
+                          <div class="form-group">
+                              <label>Procedure</label>
+                              <input type="text" name="procedure_steps" class="form-control" placeholder="Enter text" required minlength="3">
+                          </div>
+                          <div class="form-group">
+                              <label>Ingredients</label>
+                              <input type="text" name="ingredients" class="form-control" placeholder="Enter text" required minlength="3">
+                          </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save changes</button>
+                    </div>
+                  </form>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
         <div class="row">
             <div>
               <div class="table-responsive">
@@ -14,6 +63,11 @@
                       <thead>
                           <tr>
                               <th>ID</th>
+                              <th>Category Name</th>
+                              <th>Title</th>
+                              <th>Required time</th>
+                              <th>Procedure</th>
+                              <th>Ingredients</th>
                           </tr>
                       </thead>
                       <tbody>
@@ -30,3 +84,126 @@
     <!-- /.container-fluid -->
 </div>
 <!-- /#page-wrapper -->
+
+<script type="text/javascript">
+
+  $("#add-recipe").validate({
+    submitHandler: function(form, event) {
+      event.preventDefault();
+      var data = jsonize_form($(form));
+      if (data.id){
+        updateRecipe(data);
+      }else{
+        addRecipe(data);
+      }
+    }
+  });
+
+  getRecipes();
+
+  function updateRecipe(recipe){
+    $.ajax({
+         url: "api/admin/recipes/"+recipe.id,
+         type: "PUT",
+         data: JSON.stringify(post),
+         contentType: "application/json",
+         beforeSend: function(xhr){xhr.setRequestHeader('Authentication', localStorage.getItem("token"));},
+         success: function(data) {
+           toastr.success("Recipe has been updated");
+           getPosts();
+           $("#add-recipe").trigger("reset");
+           $("#add-recipe *[name='id']").val("");
+           $('#add-recipe-modal').modal("hide");
+         },
+         error: function(jqXHR, textStatus, errorThrown ){
+           toastr.error(jqXHR.responseJSON.message);
+         }
+      });
+  }
+
+  function addRecipe(recipe){
+    $.ajax({
+         url: "api/admin/recipes",
+         type: "POST",
+         data: JSON.stringify(post),
+         contentType: "application/json",
+         beforeSend: function(xhr){xhr.setRequestHeader('Authentication', localStorage.getItem("token"));},
+         success: function(data) {
+            toastr.success("Recipe has been created");
+            getRecipes();
+            $("#add-recipe").trigger("reset");
+            $('#add-recipe-modal').modal("hide");
+         },
+         error: function(jqXHR, textStatus, errorThrown ){
+           toastr.error(jqXHR.responseJSON.message);
+         }
+      });
+  }
+
+  function getRecipes(){
+
+    $("#recipes-table").DataTable({
+      processing: true,
+      serverSide: true,
+      bDestroy: true,
+      preDrawCallback: function( settings ) {
+        if ( settings.jqXHR){
+          settings._iRecordsTotal = settings.jqXHR.getResponseHeader('total-recipes');
+          settings._iRecordsDisplay = settings.jqXHR.getResponseHeader('total-recipes');
+          //$("#dashboard-recipes-card").html(settings.jqXHR.getResponseHeader('total-posts'));
+        }
+      },
+      ajax: {
+        url: "api/admin/recipes",
+        type: "GET",
+        beforeSend: function(xhr){xhr.setRequestHeader('Authentication', localStorage.getItem("token"));},
+        dataSrc: function(resp){
+          return resp;
+        },
+        data: function ( d ) {
+          d.offset=d.start;
+          d.limit=d.length;
+          d.search = d.search.value;
+          d.order = encodeURIComponent((d.order[0].dir == 'asc' ? "-" : "+")+d.columns[d.order[0].column].data);
+          delete d.start;
+          delete d.length;
+          delete d.columns;
+          delete d.draw;
+        }
+      },
+      columns: [
+            { "data": "id",
+              "render": function ( data, type, row, meta ) {
+                  return '<span class="badge">'+data+'</span><a class="pull-right" style="font-size: 15px; cursor: pointer;" onclick="openEditRecipeModal('+data+')"><i class="fa fa-edit"></i></a>';
+              }
+            },
+            { "data": "category_name" },
+            { "data": "title" },
+            { "data": "time_req" },
+            { "data": "procedure_steps" },
+            { "data": "ingredients" }
+        ]
+  });
+  }
+
+  function openEditRecipeModal(id){
+   $.ajax({
+        url: "api/admin/recipes/"+id,
+        type: "GET",
+        beforeSend: function(xhr){xhr.setRequestHeader('Authentication', localStorage.getItem("token"));},
+        success: function(data) {
+          $("#add-recipe *[name='id']").val(data.id);
+          $("#add-recipe *[name='category_name']").val(data.category_name);
+          $("#add-recipe *[name='title']").val(data.title);
+          $("#add-recipe *[name='time_req']").val(data.time_req);
+          $("#add-recipe *[name='procedure_steps']").val(data.procedure_steps);
+          $("#add-recipe *[name='ingredients']").val(data.ingredients);
+          $("#myRecipeModalLabel").html("Edit recipe");
+          $("#add-recipe-modal").modal("show");
+        },
+        error: function(jqXHR, textStatus, errorThrown ){
+          toastr.error(jqXHR.responseJSON.message);
+        }
+     });
+ }
+</script>
