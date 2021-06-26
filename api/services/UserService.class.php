@@ -13,12 +13,8 @@ class UserService extends BaseService{
     $this->smtpClient = new SMTPClient();
   }
 
-  public function get_users($search, $offset, $limit, $order){
-    if ($search){
-      return $this->dao->get_users($search, $offset, $limit, $order);
-    }else{
-      return $this->dao->get_all($offset, $limit, $order);
-    }
+  public function get_users($search, $offset, $limit, $order, $total = FALSE){
+    return $this->dao->get_users($search, $offset, $limit, $order, $total);
   }
 
   public function register($user){
@@ -32,7 +28,6 @@ class UserService extends BaseService{
         "email" => $user['email'],
         "password" => md5($user['password']),
         "role" => "USER",
-        "profile_picture" => null,
         "status" => "pending",
         "token" => md5(random_bytes(16)),
         "created_at" => date(Config::DATE_FORMAT)
