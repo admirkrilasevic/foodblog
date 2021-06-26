@@ -9,6 +9,10 @@ class CommentService extends BaseService{
     $this->dao = new CommentDao();
   }
 
+  public function get_comments($search, $offset, $limit, $order, $total = FALSE){
+    return $this->dao->get_comments($search, $offset, $limit, $order, $total);
+  }
+
   public function get_comments_by_post_id($id){
     return $this->dao->get_comments_by_post_id($id);
   }
