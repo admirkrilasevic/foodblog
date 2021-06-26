@@ -14,18 +14,13 @@ class CommentService extends BaseService{
   }
 
   public function add_comment($user, $comment){
-    //try {
       $data = [
         "user_id" => $user["id"],
         "post_id" => $comment["post_id"],
         "comment_text" => $comment["comment_text"],
         "comment_timestamp" => date(Config::DATE_FORMAT)
       ];
-      //print_r($data);
       return parent::add($data);
-    /*} catch (\Exception $e) {
-      throw new Exception("invalid");
-    }*/
   }
 
   public function update_comment($user, $id, $data) {

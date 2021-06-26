@@ -25,7 +25,7 @@ Flight::route('GET /comments/comments-for-post/@id', function($id){
 Flight::route('POST /user/comments', function(){
   $data = Flight::request()->data->getData();
   Flight::commentService()->add_comment(Flight::get("user"),$data);
-  //Flight::json(["message"=>"Your comment has been posted"]);
+  Flight::json(["message"=>"Your comment has been posted"]);
 });
 
 /**

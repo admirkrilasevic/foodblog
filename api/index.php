@@ -6,10 +6,11 @@ require_once dirname(__FILE__).'/services/RecipeService.class.php';
 require_once dirname(__FILE__).'/services/PostService.class.php';
 require_once dirname(__FILE__).'/services/CategoryService.class.php';
 require_once dirname(__FILE__).'/services/CommentService.class.php';
+require_once dirname(__FILE__).'/services/RatingService.class.php';
 
 Flight::set('flight.log_errors', TRUE);
 
-/* error handling for our API 
+/* error handling for our API
 Flight::map('error', function(Exception $ex){
   Flight::json(["message" => $ex->getMessage()], $ex->getCode() ? $ex->getCode() : 500);
 });
@@ -51,6 +52,7 @@ Flight::register('recipeService', 'RecipeService');
 Flight::register('postService', 'PostService');
 Flight::register('categoryService', 'CategoryService');
 Flight::register('commentService', 'CommentService');
+Flight::register('ratingService', 'RatingService');
 
 /* include all routes */
 require_once dirname(__FILE__)."/routes/middleware.php";
@@ -59,6 +61,7 @@ require_once dirname(__FILE__)."/routes/recipes.php";
 require_once dirname(__FILE__)."/routes/posts.php";
 require_once dirname(__FILE__)."/routes/categories.php";
 require_once dirname(__FILE__)."/routes/comments.php";
+require_once dirname(__FILE__)."/routes/ratings.php";
 
 Flight::start();
 
