@@ -34,6 +34,7 @@ class RecipeDao extends BaseDao{
       return $this->query($query, $params);
     }
   }
+
   public function category_exists($name){
     $value = $this->query("SELECT COUNT(name) AS total FROM categories WHERE name = :name", ["name" => strtolower($name)]);
     if(($value[0]['total'])!=0){
