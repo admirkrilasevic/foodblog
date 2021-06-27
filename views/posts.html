@@ -204,7 +204,10 @@
             { "data": "title" },
             { "data": "description" },
             { "data": "time_posted" },
-            { "data": "image" },
+            { "data": "image",
+              "render": function(data){
+                return '<img src="' + data + '" height="50px" width="50px"/>'
+              } },
             { "data": "view_count" },
             { "data": "avg_rating",
               "render": function(data, type, row, meta){
