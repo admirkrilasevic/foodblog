@@ -53,7 +53,7 @@ class UserService extends BaseService{
     $user = $this->dao->get_user_by_token($token);
     if (!isset($user['id'])) throw Exception("Invalid token");
     $this->dao->update($user['id'], ["status" => "ACTIVE", "token" => NULL]);
-    Flight::redirect('https://admircooks.krilasevic.me/login.html?token=.$user["token"]');
+    Flight::redirect('https://admircooks.krilasevic.me/login.html?token=123');
     return $user;
   }
 
