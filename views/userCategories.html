@@ -19,7 +19,7 @@
 </div>
 <!-- /#page-wrapper -->
 <script type="text/javascript">
-  adminSetup();
+  window.onload=adminSetup();
 
   function adminSetup(){
     if (!window.localStorage.getItem("token")){

@@ -2,32 +2,104 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-lg-12">
-                <h1 class="page-header">Welcome to Admir Cooks!</h1>
+                <h1 class="page-header"><b>Welcome to Admir Cooks!</b></h1>
             </div>
             <!-- /.col-lg-12 -->
         </div>
         <!-- /.row -->
-        <div class="row">
-            <div>
-              <h3>Best rated recipes</h3>
+        <div >
+          <div>
+            <h3>Newest recipe</h3>
+          </div>
+          <div class="row">
+              <div class="col-lg-12">
+                  <div class="jumbotron">
+                      <img id="recent-image" src="" alt="">
+                      <h2 id="recent-title"><b></b></h2>
+                      <p id="recent-description"></p>
+                      <p id="recent-rating"></p>
+                      <input id="recent-id" type="hidden" name="recent-id" />
+                      <p><a onclick=viewRecent() class="btn btn-primary btn-lg" role="button">View recipe</a></p>
+                  </div>
+              </div>
+          <div>
+            <h3>&ensp; Best rated recipes</h3>
+          </div>
+            <div class="col-sm-3">
+                <div class="hero-widget well well-sm">
+                    <div>
+                        <img id="rated-image-1" class="icon" src="" alt="">
+                    </div>
+                    <div class="text">
+                       <input id="rated-id-1" type="hidden" name="rated-id-1" />
+                        <p id="rated-title-1"class="value">Title</p>
+                        <label id="rated-description-1"class="text-muted">Description</label>
+                        <br>
+                        <label id="rated-rating-1"class="text-muted">Rating</label>
+                    </div>
+                    <div class="options">
+                        <a onclick="viewRated1()" class="btn btn-primary btn-lg"><i class="glyphicon glyphicon-plus"></i> View recipe</a>
+                    </div>
+                </div>
             </div>
-            <div>
-              <br>
-              <br>
-              <br>
+            <div class="col-sm-3">
+                <div class="hero-widget well well-sm">
+                    <div>
+                        <img id="rated-image-2" class="icon" src="" alt="">
+                    </div>
+                    <div class="text">
+                      <input id="rated-id-2" type="hidden" name="rated-id-2" />
+                        <p id="rated-title-2" class="value">Title</p>
+                        <label id="rated-description-2" class="text-muted">Description</label>
+                        <br>
+                        <label id="rated-rating-2"class="text-muted">Rating</label>
+                    </div>
+                    <div class="options">
+                        <a onclick="viewRated2()" class="btn btn-primary btn-lg"><i class="glyphicon glyphicon-plus"></i> View recipe</a>
+                    </div>
+                </div>
             </div>
-            <div>
-              <h3>Most recent recipes</h3>
+            <div class="col-sm-3">
+                <div class="hero-widget well well-sm">
+                    <div>
+                        <img id="rated-image-3" class="icon" src="" alt="">
+                    </div>
+                    <div class="text">
+                      <input id="rated-id-3" type="hidden" name="rated-id-3" />
+                        <p id="rated-title-3" class="value">Title</p>
+                        <label id="rated-description-3" class="text-muted">Description</label>
+                        <br>
+                        <label id="rated-rating-3" class="text-muted">Rating</label>
+                    </div>
+                    <div class="options">
+                        <a onclick="viewRated3()" class="btn btn-primary btn-lg"><i class="glyphicon glyphicon-plus"></i> View recipe</a>
+                    </div>
+                </div>
             </div>
-            <!-- /.col-lg-12 -->
+            <div class="col-sm-3">
+                <div class="hero-widget well well-sm">
+                    <div>
+                        <img id="rated-image-4" class="icon" src="" alt="">
+                    </div>
+                    <div class="text">
+                      <input id="rated-id-4" type="hidden" name="rated-id-4" />
+                        <p id="rated-title-4" class="value">Title</p>
+                        <label id="rated-description-4" class="text-muted">Description</label>
+                        <br>
+                        <label id="rated-rating-4" class="text-muted">Rating</label>
+                    </div>
+                    <div class="options">
+                        <a onclick="viewRated4()" class="btn btn-primary btn-lg"><i class="glyphicon glyphicon-plus"></i> View recipe</a>
+                    </div>
+                </div>
+            </div>
         </div>
-        <!-- /.row -->
     </div>
     <!-- /.container-fluid -->
 </div>
 <!-- /#page-wrapper -->
 <script type="text/javascript">
-  adminSetup();
+  window.onload=adminSetup();
 
   function adminSetup(){
     if (!window.localStorage.getItem("token")){
@@ -40,5 +112,100 @@
       }
     }
   }
+
+  getMostRecentPost();
+
+  function getMostRecentPost(){
+    $.ajax({
+         url: "api/posts/recent",
+         type: "GET",
+         async: false,
+         success: function(data) {
+           $("#recent-image").attr("src", data[0].image);
+           $("#recent-id").val(data[0].recipe_id);
+           $("#recent-title").html(data[0].title);
+           $("#recent-description").html(data[0].description);
+           $("#recent-rating").html("Rating: "+getRatingForPost(data[0].id));
+         }
+      });
+  }
+
+  function getRatingForPost(id){
+    let value = $.ajax({
+         url: "api/ratings/get-avg-rating-for-post/"+id,
+         type: "GET",
+         async: false,
+         success: function(data) {
+         }
+      });
+    return value.responseJSON;
+  }
+
+  getBestRated();
+
+  function getBestRated(){
+    $.ajax({
+         url: "api/posts/rated",
+         type: "GET",
+         async: false,
+         success: function(data) {
+           console.log(data);
+           $("#rated-image-1").attr("src", data[0].image);
+           $("#rated-id-1").val(data[0].recipe_id);
+           $("#rated-title-1").html(data[0].title);
+           $("#rated-description-1").html(data[0].description);
+           $("#rated-rating-1").html("Rating: "+getRatingForPost(data[0].id));
+
+           $("#rated-image-2").attr("src", data[1].image);
+           $("#rated-id-2").val(data[1].recipe_id);
+           $("#rated-title-2").html(data[1].title);
+           $("#rated-description-2").html(data[1].description);
+           $("#rated-rating-2").html("Rating: "+getRatingForPost(data[1].id));
+
+           $("#rated-image-3").attr("src", data[2].image);
+           $("#rated-id-3").val(data[2].recipe_id);
+           $("#rated-title-3").html(data[2].title);
+           $("#rated-description-3").html(data[2].description);
+           $("#rated-rating-3").html("Rating: "+getRatingForPost(data[2].id));
+
+           $("#rated-image-4").attr("src", data[3].image);
+           $("#rated-id-4").val(data[3].recipe_id);
+           $("#rated-title-4").html(data[3].title);
+           $("#rated-description-4").html(data[3].description);
+           $("#rated-rating-4").html("Rating: "+getRatingForPost(data[3].id));
+         }
+      });
+  }
+
+  function viewRecent() {
+    window.location="#recipe";
+    console.log($("input#recent-id").val());
+    window.localStorage.setItem("recent-post", $("input#recent-id").val());
+  }
+
+  function viewRated1() {
+    window.location="#recipe";
+    console.log($("input#rated-id-1").val());
+    window.localStorage.setItem("rated-post-1", $("input#rated-id-1").val());
+  }
+
+  function viewRated2() {
+    window.location="#recipe";
+    console.log($("input#rated-id-2").val());
+    window.localStorage.setItem("rated-post-2", $("input#rated-id-2").val());
+  }
+
+  function viewRated3() {
+    window.location="#recipe";
+    console.log($("input#rated-id-3").val());
+    window.localStorage.setItem("rated-post-3", $("input#rated-id-3").val());
+  }
+
+  function viewRated4() {
+    window.location="#recipe";
+    console.log($("input#rated-id-4").val());
+    window.localStorage.setItem("rated-post-4", $("input#rated-id-4").val());
+  }
+
 
 </script>

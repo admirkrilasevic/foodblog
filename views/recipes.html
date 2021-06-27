@@ -139,7 +139,7 @@
     $.ajax({
          url: "api/admin/recipes",
          type: "POST",
-         data: JSON.stringify(post),
+         data: JSON.stringify(recipe),
          contentType: "application/json",
          beforeSend: function(xhr){xhr.setRequestHeader('Authentication', localStorage.getItem("token"));},
          success: function(data) {

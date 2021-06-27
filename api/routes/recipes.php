@@ -59,12 +59,12 @@ Flight::route('GET /admin/recipes', function(){
 });
 
 /**
- * @OA\Get(path="/admin/recipes/{id}", tags={"recipes", "x-admin"}, security={{"ApiKeyAuth": {}}},
+ * @OA\Get(path="/recipes/{id}", tags={"recipes", "x-admin"},
  *     @OA\Parameter(@OA\Schema(type="integer"), in="path", name="id", default=1, description="Id of recipe"),
  *     @OA\Response(response="200", description="Fetch individual recipe")
  * )
  */
-Flight::route('GET /admin/recipes/@id', function($id){
+Flight::route('GET /recipes/@id', function($id){
   Flight::json(Flight::recipeService()->get_by_id($id));
 });
 

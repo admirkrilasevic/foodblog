@@ -34,6 +34,18 @@ class PostDao extends BaseDao{
       return $this->query($query, $params);
     }
   }
+
+  public function get_most_recent_post(){
+      $params = [];
+      $query = "SELECT * FROM posts ORDER BY time_posted DESC LIMIT 1";
+      return $this->query($query, $params);
+  }
+
+  public function get_best_rated(){
+      $params = [];
+      $query = "SELECT * FROM posts ORDER BY avg_rating DESC LIMIT 4";
+      return $this->query($query, $params);
+  }
 }
 
 ?>

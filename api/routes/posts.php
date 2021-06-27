@@ -20,6 +20,24 @@ Flight::route('GET /admin/posts', function(){
 });
 
 /**
+ * @OA\Get(path="/posts/recent", tags={"x-admin","posts"},
+ *     @OA\Response(response="200", description="List most recent post")
+ * )
+ */
+Flight::route('GET /posts/recent', function(){
+  Flight::json(Flight::postService()->get_most_recent_post());
+});
+
+/**
+ * @OA\Get(path="/posts/rated", tags={"x-admin","posts"},
+ *     @OA\Response(response="200", description="List 4 best rated posts")
+ * )
+ */
+Flight::route('GET /posts/rated', function(){
+  Flight::json(Flight::postService()->get_best_rated());
+});
+
+/**
  * @OA\Post(path="/admin/posts", tags={"posts", "x-admin"}, security={{"ApiKeyAuth": {}}},
  *   @OA\RequestBody(description="Adding a post", required=true,
  *       @OA\MediaType(mediaType="application/json",

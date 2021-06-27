@@ -13,6 +13,14 @@ class PostService extends BaseService{
     return $this->dao->get_posts($search, $offset, $limit, $order, $total);
   }
 
+  public function get_most_recent_post(){
+    return $this->dao->get_most_recent_post();
+  }
+
+  public function get_best_rated(){
+    return $this->dao->get_best_rated();
+  }
+
   public function add_post($post){
 
       $data= [
