@@ -51,7 +51,7 @@
             <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
                 <div class="navbar-header">
 
-                    <a class="navbar-brand " href="#user-recipes">
+                    <a class="navbar-brand " href="#user-home">
                       <img style="width: 20px; height: 20px; float: left; margin-right: 10px;" src="./assets/images/logo.jpg" alt="Admir Cooks logo">
                       Admir Cooks
                     </a>
@@ -88,7 +88,7 @@
                 </ul>
                 <!-- /.navbar-top-links -->
 
-                <div class="navbar-default sidebar" role="navigation">
+                <div id="sidebar-menu" class="navbar-default sidebar" role="navigation">
                     <div class="sidebar-nav navbar-collapse">
                         <ul class="nav" id="side-menu">
                             <li>
@@ -126,6 +126,7 @@
               <section id="categories" data-load="categories.html" ></section>
               <section id="comments" data-load="comments.html" ></section>
               <section id="ratings" data-load="ratings.html" ></section>
+              <section id="user-home" data-load="userHome.html" ></section>
               <section id="user-recipes" data-load="userRecipes.html" ></section>
               <section id="user-categories" data-load="userCategories.html" ></section>
               <section id="user-about" data-load="userAbout.html" ></section>
@@ -169,16 +170,22 @@
         <script src="//cdn.datatables.net/responsive/2.2.7/js/dataTables.responsive.min.js"></script>
 
         <script type="text/javascript">
+
           $(document).ready(function() {
-            var app = $.jQuerySPApp({defaultView  : "dashboard"});
+            var app = $.jQuerySPApp({defaultView  : "user-home"});
 
             app.run();
 
             if (!window.localStorage.getItem("token")){
               document.getElementById("account-dropdown").style.display = "none";
+              document.getElementById("sidebar-menu").style.display = "none";
             };
             if(window.localStorage.getItem("token")){
               document.getElementById("sign-in-button").style.display = "none";
+              var user_info = parse_jwt(window.localStorage.getItem("token"));
+              if (user_info.r != "ADMIN"){
+                document.getElementById("sidebar-menu").style.display = "none";
+              }
             };
           });
 

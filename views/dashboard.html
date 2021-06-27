@@ -154,6 +154,20 @@
 
 <script>
 
+  adminSetup();
+
+  function adminSetup(){
+    if (!window.localStorage.getItem("token")){
+      document.getElementById("page-wrapper").style.marginLeft = "0px";
+    }
+    if(window.localStorage.getItem("token")){
+      var user_info = parse_jwt(window.localStorage.getItem("token"));
+      if (user_info.r != "ADMIN"){
+        document.getElementById("page-wrapper").style.marginLeft = "0px";
+      }
+    }
+  }
+
   $("#dashboard-users-card").html(getTotalUsers());
   $("#dashboard-posts-card").html(getTotalPosts());
   $("#dashboard-recipes-card").html(getTotalRecipes());
