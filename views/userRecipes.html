@@ -14,6 +14,31 @@
                   </div>
                   <div id="recipe-comments" class="panel-body">
                   </div>
+                  <div class="modal fade" id="add-comment-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                      <div class="modal-dialog" role="document">
+                          <div class="modal-content">
+                            <form role="form" id="add-comment">
+                              <input id="post_id" type="hidden" name="post_id" />
+                              <div class="modal-header">
+                                  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                  <h4 class="modal-title" id="myModalLabel">Add Comment</h4>
+                              </div>
+                              <div class="modal-body">
+                                    <div class="form-group">
+                                        <label>Text</label>
+                                        <input type="text" name="comment_text" class="form-control" placeholder="Enter text" required minlength="3">
+                                    </div>
+                              </div>
+                              <div class="modal-footer">
+                                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                  <button type="submit" class="btn btn-primary">Save changes</button>
+                              </div>
+                            </form>
+                          </div>
+                          <!-- /.modal-content -->
+                      </div>
+                      <!-- /.modal-dialog -->
+                  </div>
             </div>
         </div>
             <!-- /.col-lg-12 -->
@@ -130,9 +155,47 @@
                       </div>
                     </div>`;
     		}
+        text += `<button type="button" onclick=openAddCommentModal(${id})>
+                  + Add Comment
+                 </button>`;
         $("#recipe-comments").html(text);
       }
     });
   }
+
+
+    $("#add-comment").validate({
+      submitHandler: function(form, event) {
+        event.preventDefault();
+        var data = jsonize_form($(form));
+        addComment(data);
+      }
+    });
+
+    function openAddCommentModal(id){
+      $("#add-comment *[name='post_id']").val(id);
+      $("#add-comment-modal").modal("show");
+    }
+
+    function addComment(comment){
+
+      $.ajax({
+           url: "api/user/comments",
+           type: "POST",
+           beforeSend: function(xhr){xhr.setRequestHeader('Authentication', localStorage.getItem("token"));},
+           data: JSON.stringify(comment),
+           contentType: "application/json",
+           success: function(data) {
+              toastr.success("Comment has been added");
+              loadComments($("#add-comment *[name='post_id']").val());
+              $("#add-comment").trigger("reset");
+              $('#add-comment-modal').modal("hide");
+           },
+           error: function(jqXHR, textStatus, errorThrown ){
+             toastr.error(jqXHR.responseJSON.message);
+           }
+        });
+    }
+
 
 </script>

@@ -351,7 +351,7 @@
                     </div>`;
     		}
         text += `<button onclick=hide("recent-recipe-comment-container") >Hide</button>
-                <button type="button" onclick=openAddCommentModal(${id})>
+                <button type="button" onclick=openAddCommentForRecentModal(${id})>
                   + Add Comment
                 </button>`;
         $("#recent-recipe-comment-container").html(text);
@@ -402,14 +402,12 @@
     }
   });
 
-  function openAddCommentModal(id){
-    console.log(id);
+  function openAddCommentForRecentModal(id){
     $("#add-comment-recent *[name='post_id']").val(id);
     $("#add-comment-recent-modal").modal("show");
   }
 
   function openAddCommentForRatedModal(id){
-    console.log(id);
     $("#add-comment-rated *[name='post_id']").val(id);
     $("#add-comment-rated-modal").modal("show");
   }
@@ -423,7 +421,6 @@
          data: JSON.stringify(comment),
          contentType: "application/json",
          success: function(data) {
-           console.log(data);
             toastr.success("Comment has been added");
             viewCommentsForRecent($("#add-comment-recent *[name='post_id']").val());
             $("#add-comment-recent").trigger("reset");
@@ -444,7 +441,6 @@
          data: JSON.stringify(comment),
          contentType: "application/json",
          success: function(data) {
-           console.log(data);
             toastr.success("Comment has been added");
             viewCommentsForRated($("#add-comment-rated *[name='post_id']").val());
             $("#add-comment-rated").trigger("reset");
