@@ -19,10 +19,14 @@
                       <p id="recent-description"></p>
                       <p id="recent-rating"></p>
                       <input id="recent-id" type="hidden" name="recent-id" />
-                      <p><a onclick=viewRecent() class="btn btn-primary btn-lg" role="button">View recipe</a></p>
+                      <p><a onclick=openRecentRecipe($("input#recent-id").val()) class="btn btn-primary btn-lg" role="button">View recipe</a></p>
                   </div>
               </div>
+              <div id="recent-recipe-container">
+
+              </div>
           <div>
+
             <h3>&ensp; Best rated recipes</h3>
           </div>
             <div class="col-sm-3">
@@ -40,10 +44,11 @@
                         <br>
                         <label id="rated-description-1"class="text-muted">Description</label>
                         <br>
+                        <br>
                         <label id="rated-rating-1"class="text-muted">Rating</label>
                     </div>
                     <div class="options">
-                        <a onclick="viewRated1()" class="btn btn-primary btn-lg"><i class="glyphicon glyphicon-plus"></i> View recipe</a>
+                        <a onclick=openRatedRecipe($("input#rated-id-1").val()) class="btn btn-primary btn-lg"><i class="glyphicon glyphicon-plus"></i> View recipe</a>
                     </div>
                 </div>
             </div>
@@ -63,10 +68,11 @@
                         <br>
                         <label id="rated-description-2" class="text-muted">Description</label>
                         <br>
+                        <br>
                         <label id="rated-rating-2"class="text-muted">Rating</label>
                     </div>
                     <div class="options">
-                        <a onclick="viewRated2()" class="btn btn-primary btn-lg"><i class="glyphicon glyphicon-plus"></i> View recipe</a>
+                        <a onclick=openRatedRecipe($("input#rated-id-2").val()) class="btn btn-primary btn-lg"><i class="glyphicon glyphicon-plus"></i> View recipe</a>
                     </div>
                 </div>
             </div>
@@ -86,10 +92,11 @@
                         <br>
                         <label id="rated-description-3" class="text-muted">Description</label>
                         <br>
+                        <br>
                         <label id="rated-rating-3" class="text-muted">Rating</label>
                     </div>
                     <div class="options">
-                        <a onclick="viewRated3()" class="btn btn-primary btn-lg"><i class="glyphicon glyphicon-plus"></i> View recipe</a>
+                        <a onclick=openRatedRecipe($("input#rated-id-3").val()) class="btn btn-primary btn-lg"><i class="glyphicon glyphicon-plus"></i> View recipe</a>
                     </div>
                 </div>
             </div>
@@ -109,12 +116,17 @@
                         <br>
                         <label id="rated-description-4" class="text-muted">Description</label>
                         <br>
+                        <br>
+                        <br>
                         <label id="rated-rating-4" class="text-muted">Rating</label>
                     </div>
                     <div class="options">
-                        <a onclick="viewRated4()" class="btn btn-primary btn-lg"><i class="glyphicon glyphicon-plus"></i> View recipe</a>
+                        <a onclick=openRatedRecipe($("input#rated-id-4").val()) class="btn btn-primary btn-lg"><i class="glyphicon glyphicon-plus"></i> View recipe</a>
                     </div>
                 </div>
+            </div>
+            <div id="rated-recipe-container">
+
             </div>
         </div>
     </div>
@@ -200,34 +212,48 @@
       });
   }
 
-  function viewRecent() {
-    window.location="#recipe";
-    console.log($("input#recent-id").val());
-    window.localStorage.setItem("recent-post", $("input#recent-id").val());
+  function openRecentRecipe(id){
+    $.ajax ({
+      url : "api/recipes/"+id,
+      method: "GET",
+      success: function(data){
+        let text = "";
+          text += `<div class='col-lg-12'>
+                     <div class='card' style='height: auto;'>
+                       <div class='card-body'>
+                         <h3 class='card-title'>${data.title}</h3>
+                         <h6 class='card-subtitle text-muted'>Category: ${data.category_name}</h6>
+                         <h6 class='card-subtitle text-muted'>Time required: ${data.time_req}</h6>
+                         <p class='card-text panel'>Ingredients: ${data.ingredients}</p>
+                         <p class='card-text panel'>Procedure: ${data.procedure_steps}</p>
+                        </div>
+                      </div>
+                    </div>`;
+        $("#recent-recipe-container").html(text);
+      }
+    });
   }
 
-  function viewRated1() {
-    window.location="#recipe";
-    console.log($("input#rated-id-1").val());
-    window.localStorage.setItem("rated-post-1", $("input#rated-id-1").val());
-  }
-
-  function viewRated2() {
-    window.location="#recipe";
-    console.log($("input#rated-id-2").val());
-    window.localStorage.setItem("rated-post-2", $("input#rated-id-2").val());
-  }
-
-  function viewRated3() {
-    window.location="#recipe";
-    console.log($("input#rated-id-3").val());
-    window.localStorage.setItem("rated-post-3", $("input#rated-id-3").val());
-  }
-
-  function viewRated4() {
-    window.location="#recipe";
-    console.log($("input#rated-id-4").val());
-    window.localStorage.setItem("rated-post-4", $("input#rated-id-4").val());
+  function openRatedRecipe(id){
+    $.ajax ({
+      url : "api/recipes/"+id,
+      method: "GET",
+      success: function(data){
+        let text = "";
+          text += `<div class='col-lg-12'>
+                     <div class='card' style='height: auto;'>
+                       <div class='card-body'>
+                         <h3 class='card-title'>${data.title}</h3>
+                         <h6 class='card-subtitle text-muted'>Category: ${data.category_name}</h6>
+                         <h6 class='card-subtitle text-muted'>Time required: ${data.time_req}</h6>
+                         <p class='card-text panel'>Ingredients: ${data.ingredients}</p>
+                         <p class='card-text panel'>Procedure: ${data.procedure_steps}</p>
+                        </div>
+                      </div>
+                    </div>`;
+        $("#rated-recipe-container").html(text);
+      }
+    });
   }
 
 
