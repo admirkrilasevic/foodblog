@@ -20,11 +20,16 @@
                       <p id="recent-rating"></p>
                       <input id="recent-id" type="hidden" name="recent-id" />
                       <p><a onclick=openRecentRecipe($("input#recent-id").val()) class="btn btn-primary btn-lg" role="button">View recipe</a></p>
+                      <p><a onclick=viewCommentsForRecent($("input#recent-id").val()) class="btn btn-primary btn-lg" role="button">View comments</a></p>
                   </div>
               </div>
               <div id="recent-recipe-container">
 
               </div>
+              <div id="recent-recipe-comment-container">
+
+              </div>
+              <div class="row"><br></div>
           <div>
 
             <h3>&ensp; Best rated recipes</h3>
@@ -48,7 +53,8 @@
                         <label id="rated-rating-1"class="text-muted">Rating</label>
                     </div>
                     <div class="options">
-                        <a onclick=openRatedRecipe($("input#rated-id-1").val()) class="btn btn-primary btn-lg"><i class="glyphicon glyphicon-plus"></i> View recipe</a>
+                        <p><a onclick=openRatedRecipe($("input#rated-id-1").val()) class="btn btn-primary btn-lg" role="button">View recipe</a></p>
+                        <p><a onclick=viewCommentsForRated($("input#rated-id-1").val()) class="btn btn-primary btn-lg" role="button">View comments</a></p>
                     </div>
                 </div>
             </div>
@@ -72,7 +78,8 @@
                         <label id="rated-rating-2"class="text-muted">Rating</label>
                     </div>
                     <div class="options">
-                        <a onclick=openRatedRecipe($("input#rated-id-2").val()) class="btn btn-primary btn-lg"><i class="glyphicon glyphicon-plus"></i> View recipe</a>
+                      <p><a onclick=openRatedRecipe($("input#rated-id-2").val()) class="btn btn-primary btn-lg" role="button">View recipe</a></p>
+                      <p><a onclick=viewCommentsForRated($("input#rated-id-2").val()) class="btn btn-primary btn-lg" role="button">View comments</a></p>
                     </div>
                 </div>
             </div>
@@ -96,7 +103,8 @@
                         <label id="rated-rating-3" class="text-muted">Rating</label>
                     </div>
                     <div class="options">
-                        <a onclick=openRatedRecipe($("input#rated-id-3").val()) class="btn btn-primary btn-lg"><i class="glyphicon glyphicon-plus"></i> View recipe</a>
+                      <p><a onclick=openRatedRecipe($("input#rated-id-3").val()) class="btn btn-primary btn-lg" role="button">View recipe</a></p>
+                      <p><a onclick=viewCommentsForRated($("input#rated-id-3").val()) class="btn btn-primary btn-lg" role="button">View comments</a></p>
                     </div>
                 </div>
             </div>
@@ -121,13 +129,18 @@
                         <label id="rated-rating-4" class="text-muted">Rating</label>
                     </div>
                     <div class="options">
-                        <a onclick=openRatedRecipe($("input#rated-id-4").val()) class="btn btn-primary btn-lg"><i class="glyphicon glyphicon-plus"></i> View recipe</a>
+                      <p><a onclick=openRatedRecipe($("input#rated-id-4").val()) class="btn btn-primary btn-lg" role="button">View recipe</a></p>
+                      <p><a onclick=viewCommentsForRated($("input#rated-id-4").val()) class="btn btn-primary btn-lg" role="button">View comments</a></p>
                     </div>
                 </div>
             </div>
             <div id="rated-recipe-container">
 
             </div>
+            <div id="rated-recipe-comment-container">
+
+            </div>
+            <div class="row"><br></div>
         </div>
     </div>
     <!-- /.container-fluid -->
@@ -213,6 +226,7 @@
   }
 
   function openRecentRecipe(id){
+    document.getElementById("recent-recipe-container").style.display = "initial";
     $.ajax ({
       url : "api/recipes/"+id,
       method: "GET",
@@ -226,6 +240,9 @@
                          <h6 class='card-subtitle text-muted'>Time required: ${data.time_req}</h6>
                          <p class='card-text panel'>Ingredients: ${data.ingredients}</p>
                          <p class='card-text panel'>Procedure: ${data.procedure_steps}</p>
+                        </div>
+                        <div class="card-footer">
+						            	<button onclick=hide("recent-recipe-container") >Hide</button>
                         </div>
                       </div>
                     </div>`;
@@ -235,6 +252,7 @@
   }
 
   function openRatedRecipe(id){
+    document.getElementById("rated-recipe-container").style.display = "initial";
     $.ajax ({
       url : "api/recipes/"+id,
       method: "GET",
@@ -249,9 +267,69 @@
                          <p class='card-text panel'>Ingredients: ${data.ingredients}</p>
                          <p class='card-text panel'>Procedure: ${data.procedure_steps}</p>
                         </div>
+                        <div class="card-footer">
+						            	<button onclick=hide("rated-recipe-container") >Hide</button>
+                        </div>
                       </div>
                     </div>`;
         $("#rated-recipe-container").html(text);
+      }
+    });
+  }
+
+  function hide(id){
+    console.log(id);
+    document.getElementById(id).style.display = "none";
+  }
+
+  function viewCommentsForRecent(id){
+    document.getElementById("recent-recipe-comment-container").style.display = "initial";
+    $.ajax ({
+      url : "api/comments/comments-for-post/"+id,
+      method: "GET",
+      success: function(data){
+        let text = "";
+    		for(let i=0; i<data.length; i++){
+    			text += `<div class='col-lg-12'>
+                     <div class='card' style='height: auto;'>
+                       <div class='card-body'>
+                         <h6 class='card-subtitle text-muted'>${data[i].name}</h6>
+    							       <h6 class='card-subtitle text-muted'>${data[i].comment_timestamp}</h6>
+    							       <p class='card-text panel'>${data[i].comment_text}</p>
+                        </div>
+                        <div class="card-footer">
+						            	<button onclick=hide("recent-recipe-comment-container") >Hide</button>
+                        </div>
+                      </div>
+                    </div>`;
+    		}
+        $("#recent-recipe-comment-container").html(text);
+      }
+    });
+  }
+
+  function viewCommentsForRated(id){
+    document.getElementById("rated-recipe-comment-container").style.display = "initial";
+    $.ajax ({
+      url : "api/comments/comments-for-post/"+id,
+      method: "GET",
+      success: function(data){
+        let text = "";
+    		for(let i=0; i<data.length; i++){
+    			text += `<div class='col-lg-12'>
+                     <div class='card' style='height: auto;'>
+                       <div class='card-body'>
+                         <h6 class='card-subtitle text-muted'>${data[i].name}</h6>
+    							       <h6 class='card-subtitle text-muted'>${data[i].comment_timestamp}</h6>
+    							       <p class='card-text panel'>${data[i].comment_text}</p>
+                        </div>
+                        <div class="card-footer">
+						            	<button onclick=hide("rated-recipe-comment-container") >Hide</button>
+                        </div>
+                      </div>
+                    </div>`;
+    		}
+        $("#rated-recipe-comment-container").html(text);
       }
     });
   }
