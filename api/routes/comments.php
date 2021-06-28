@@ -20,7 +20,7 @@ Flight::route('GET /admin/comments', function(){
 });
 
 /**
- * @OA\Get(path="/comments/comments-for-post/{id}",tags={"x-user","comments"},security={{"ApiKeyAuth": {}}},
+ * @OA\Get(path="/comments/comments-for-post/{id}",tags={"comments"},security={{"ApiKeyAuth": {}}},
  *     @OA\Parameter(type="integer", in="path", allowReserved=true, name="id", default=1, description="Id of a post"),
  *     @OA\Response(response="200", description="Comments retrieved")
  * )

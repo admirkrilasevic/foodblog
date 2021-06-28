@@ -297,7 +297,6 @@
          type: "GET",
          async: false,
          success: function(data) {
-           console.log(data);
            $("#rated-image-1").attr("src", data[0].image);
            $("#rated-id-1").val(data[0].recipe_id);
            $("#rated-title-1").html(data[0].title);
@@ -378,7 +377,6 @@
   }
 
   function hide(id){
-    console.log(id);
     document.getElementById(id).style.display = "none";
   }
 

@@ -209,7 +209,6 @@
 
           function doLogin(){
               $("#login-link").prop('disabled',true);
-              console.log(jsonize_form("#login-form"));
               $.post("api/login", jsonize_form("#login-form")).done(function( data ) {
                 window.localStorage.setItem("token", data.token);
                 window.location = "index.html";

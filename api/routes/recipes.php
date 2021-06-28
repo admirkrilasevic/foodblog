@@ -76,7 +76,7 @@ Flight::route('GET /admin/recipes', function(){
 });
 
 /**
- * @OA\Get(path="/recipes/{id}", tags={"recipes", "x-admin"},
+ * @OA\Get(path="/recipes/{id}", tags={"recipes"},
  *     @OA\Parameter(@OA\Schema(type="integer"), in="path", name="id", default=1, description="Id of recipe"),
  *     @OA\Response(response="200", description="Fetch individual recipe")
  * )
