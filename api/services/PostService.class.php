@@ -28,7 +28,7 @@ class PostService extends BaseService{
         "title" => $post['title'],
         "description" => $post['description'],
         "time_posted" => date(Config::DATE_FORMAT),
-        "image" => null,
+        "image" => $post['image'],
         "avg_rating" => null
       ];
        return parent::add($data);

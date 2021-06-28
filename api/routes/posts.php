@@ -61,7 +61,8 @@ Flight::route('GET /posts/rated', function(){
  *    			@OA\Schema(
  *             @OA\Property(property="recipe_id", required="true", type="integer", example="1",	description="Id of the recipe" ),
  *    				 @OA\Property(property="title", required="true", type="string", example="Easy cheesecake recipe",	description="Title of the post" ),
- *    				 @OA\Property(property="description", required="true", type="string", example="If you are looking for a quick dessert recipe...",	description="Description of the post" )
+ *    				 @OA\Property(property="description", required="true", type="string", example="If you are looking for a quick dessert recipe...",	description="Description of the post" ),
+ *    				 @OA\Property(property="image", required="true", type="string", example="cdn...",	description="Link of the image for the post" )
  *          )
  *       )
  *     ),
@@ -109,7 +110,8 @@ Flight::route('GET /admin/posts/@id', function($id){
  *    			@OA\Schema(
  *             @OA\Property(property="recipe_id", required="true", type="integer", example="1",	description="Id of the recipe" ),
  *    				 @OA\Property(property="title", required="true", type="string", example="Easy cheesecake recipe",	description="Title of the post" ),
- *    				 @OA\Property(property="description", required="true", type="string", example="If you are looking for a quick dessert recipe...",	description="Description of the post" )
+ *    				 @OA\Property(property="description", required="true", type="string", example="If you are looking for a quick dessert recipe...",	description="Description of the post" ),
+  *    				 @OA\Property(property="image", required="true", type="string", example="cdn...",	description="Link of the image for the post" )
  *          )
  *       )
  *     ),
