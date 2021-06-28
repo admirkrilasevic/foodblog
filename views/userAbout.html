@@ -48,6 +48,18 @@
 <script type="text/javascript">
   window.onload=adminSetup();
 
+  (function reloading(){
+    if( window.localStorage ){
+      if( !localStorage.getItem('firstLoadAbout') ){
+        localStorage['firstLoadAbout'] = true;
+        window.location.reload();
+      }
+      else{
+        localStorage.removeItem('firstLoadAbout');
+      }
+    }
+  })();
+
   function adminSetup(){
     if (!window.localStorage.getItem("token")){
       document.getElementById("page-wrapper").style.marginLeft = "0px";

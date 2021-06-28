@@ -84,7 +84,20 @@
 </div>
 <!-- /#page-wrapper -->
 <script type="text/javascript">
+
   window.onload=adminSetup();
+
+  (function reloading(){
+    if( window.localStorage ){
+      if( !localStorage.getItem('firstLoadRecipes') ){
+        localStorage['firstLoadRecipes'] = true;
+        window.location.reload();
+      }
+      else{
+        localStorage.removeItem('firstLoadRecipes');
+      }
+    }
+  })();
 
   function adminSetup(){
     if (!window.localStorage.getItem("token")){

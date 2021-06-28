@@ -19,6 +19,18 @@
 <script type="text/javascript">
   window.onload=adminSetup();
 
+  (function reloading(){
+    if( window.localStorage ){
+      if( !localStorage.getItem('firstLoadProfile') ){
+        localStorage['firstLoadProfile'] = true;
+        window.location.reload();
+      }
+      else{
+        localStorage.removeItem('firstLoadProfile');
+      }
+    }
+  })();
+
   function adminSetup(){
     if (!window.localStorage.getItem("token")){
       document.getElementById("page-wrapper").style.marginLeft = "0px";
