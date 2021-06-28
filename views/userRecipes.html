@@ -2,14 +2,29 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-lg-12">
-                <h1 class="page-header">Welcome to Admir Cooks!</h1>
+                <h1 class="page-header">All recipes</h1>
             </div>
+            <div class="col-lg-12">
+              <div class="panel panel-default">
+                  <div class="panel-heading">
+                      <h3 id="recipe-heading">Recipe panel</h3>
+                  </div>
+                  <div id="recipe-content" class="panel-body">
+                      <p>When you click on a "Load this recipe" button, the recipe will appear here!</p>
+                  </div>
+                  <div id="recipe-comments" class="panel-body">
+                  </div>
+            </div>
+        </div>
             <!-- /.col-lg-12 -->
         </div>
         <!-- /.row -->
-        <div class="row">
+        <div>
             <div>
-              <p>Below you can see all the posted recipes, sorted from newest to oldest!</p>
+              <p><b><i>Below you can see all the recipe posts from latest to oldest!</i></b></p>
+            </div>
+            <div id="posts-container" class="row" >
+
             </div>
             <!-- /.col-lg-12 -->
         </div>
@@ -31,6 +46,93 @@
         document.getElementById("page-wrapper").style.marginLeft = "0px";
       }
     }
+  }
+
+  getAllPosts();
+
+  function getRatingForPost(id){
+    let value = $.ajax({
+         url: "api/ratings/get-avg-rating-for-post/"+id,
+         type: "GET",
+         async: false,
+         success: function(data) {
+         }
+      });
+    return value.responseJSON;
+  }
+
+  function getAllPosts(){
+    $.ajax ({
+    	url : "api/posts",
+    	method: "GET",
+    	success: function(data){
+    		let text = "";
+    		for(let i=0; i<data.length; i++){
+          let rating = getRatingForPost(data[i].id);
+          text += `<div class='col-lg-12'>
+                     <div class='card' style='height: auto;'>
+                       <div class='card-body'>
+                         <h3 class='card-title'>${data[i].title}</h3>
+                         <h6 class='card-subtitle text-muted'>${data[i].description}</h6>
+    							       <h6 class='card-subtitle text-muted'>Posted on: ${data[i].time_posted}</h6>
+                         <h6 class='card-subtitle text-muted'>Rating: ${rating}</h6>
+    							       <img style="width: 400px;" src="${data[i].image}"></img>
+                        </div>
+                        <div class="card-footer">
+                          <br>
+						            	<button class="btn btn-primary btn-lg" onclick=loadRecipe(${data[i].recipe_id}) >Load this recipe</button>
+                        </div>
+                      </div>
+                    </div>`;
+    		}
+    		$("#posts-container").html(text);
+    	}
+    });
+  }
+
+  function loadRecipe(id){
+    $.ajax ({
+      url : "api/recipes/"+id,
+      method: "GET",
+      success: function(data){
+        $("#recipe-heading").html(data.title);
+        let text = "";
+          text += `<div class='col-lg-12'>
+                     <div class='card' style='height: auto;'>
+                       <div class='card-body'>
+                         <h6 class='card-subtitle text-muted'>Category: ${data.category_name}</h6>
+                         <h6 class='card-subtitle text-muted'>Time required: ${data.time_req}</h6>
+                         <p class='card-text panel'>Ingredients: ${data.ingredients}</p>
+                         <p class='card-text panel'>Procedure: ${data.procedure_steps}</p>
+                        </div>
+                      </div>
+                    </div>`;
+        $("#recipe-content").html(text);
+      }
+    });
+    loadComments(id);
+  }
+
+  function loadComments(id){
+    $.ajax ({
+      url : "api/comments/comments-for-post/"+id,
+      method: "GET",
+      success: function(data){
+        let text = "<h4>Comments: </h4>";
+    		for(let i=0; i<data.length; i++){
+    			text += `<div class='col-lg-12'>
+                     <div class='card' style='height: auto;'>
+                       <div class='card-body'>
+                         <h6 class='card-subtitle text-muted'>${data[i].name}</h6>
+    							       <h6 class='card-subtitle text-muted'>${data[i].comment_timestamp}</h6>
+    							       <p class='card-text panel'>${data[i].comment_text}</p>
+                        </div>
+                      </div>
+                    </div>`;
+    		}
+        $("#recipe-comments").html(text);
+      }
+    });
   }
 
 </script>

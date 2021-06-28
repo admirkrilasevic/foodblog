@@ -20,6 +20,23 @@ Flight::route('GET /admin/recipes', function(){
 });
 
 /**
+ * @OA\Get(path="/recipes", tags={"recipes"},
+ *     @OA\Parameter(type="integer", in="query", name="offset", default=0, description="Offset for pagination"),
+ *     @OA\Parameter(type="integer", in="query", name="limit", default=25, description="Limit for pagination"),
+ *     @OA\Parameter(type="string", in="query", name="search", description="Search string for recipes. Case insensitive search."),
+ *     @OA\Parameter(type="string", in="query", name="order", default="-title", description="Sorting for return elements. -column_name ascending order by column_name or +column_name descending order by column_name"),
+ *     @OA\Response(response="200", description="List recipes from database in alphabetical order")
+ * )
+ */
+Flight::route('GET /recipes', function(){
+  $offset = Flight::query('offset', 0);
+  $limit = Flight::query('limit', 25);
+  $search = Flight::query('search');
+  $order = Flight::query('order', "-title");
+  Flight::json(Flight::recipeService()->get_recipes($search, $offset, $limit, $order));
+});
+
+/**
  * @OA\Post(path="/admin/recipes", tags={"recipes", "x-admin"}, security={{"ApiKeyAuth": {}}},
  *   @OA\RequestBody(description="Adding a recipe", required=true,
  *       @OA\MediaType(mediaType="application/json",

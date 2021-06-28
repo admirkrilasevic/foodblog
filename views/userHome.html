@@ -29,6 +29,34 @@
               <div id="recent-recipe-comment-container">
 
               </div>
+              <div class="modal fade" id="add-comment-recent-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                  <div class="modal-dialog" role="document">
+                      <div class="modal-content">
+                        <form role="form" id="add-comment-recent">
+                          <div class="modal-header">
+                              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                              <h4 class="modal-title" id="myModalLabel">Add Comment</h4>
+                          </div>
+                          <div class="modal-body">
+                                <div class="form-group hidden">
+                                    <label>Post ID</label>
+                                    <input type="integer" name="post-id" class="form-control" placeholder="Enter text">
+                                </div>
+                                <div class="form-group">
+                                    <label>Text</label>
+                                    <input type="text" name="comment-text" class="form-control" placeholder="Enter text" required minlength="3">
+                                </div>
+                          </div>
+                          <div class="modal-footer">
+                              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                              <button type="submit" class="btn btn-primary">Save changes</button>
+                          </div>
+                        </form>
+                      </div>
+                      <!-- /.modal-content -->
+                  </div>
+                  <!-- /.modal-dialog -->
+              </div>
               <div class="row"><br></div>
           <div>
 
@@ -299,6 +327,9 @@
                         </div>
                         <div class="card-footer">
 						            	<button onclick=hide("recent-recipe-comment-container") >Hide</button>
+                          <button type="button" data-toggle="modal" data-target="#add-comment-recent-modal">
+                              + Add Comment
+                          </button>
                         </div>
                       </div>
                     </div>`;
@@ -332,6 +363,34 @@
         $("#rated-recipe-comment-container").html(text);
       }
     });
+  }
+
+  $("#add-comment-recent").validate({
+    submitHandler: function(form, event) {
+      event.preventDefault();
+      var data = jsonize_form($(form));
+      addCommentRecent(data);
+    }
+  });
+
+  function addCommentRecent(comment){
+    $("#add-comment-recent *[name='post-id']").val($("#recent-id").val());
+    $.ajax({
+         url: "api/user/comments",
+         type: "POST",
+         beforeSend: function(xhr){xhr.setRequestHeader('Authentication', localStorage.getItem("token"));},
+         data: JSON.stringify(comment),
+         contentType: "application/json",
+         success: function(data) {
+            toastr.success("Comment has been added");
+            viewCommentsForRecent();
+            $("#add-comment-recent").trigger("reset");
+            $('#add-comment-recent-modal').modal("hide");
+         },
+         error: function(jqXHR, textStatus, errorThrown ){
+           toastr.error(jqXHR.responseJSON.message);
+         }
+      });
   }
 
 
