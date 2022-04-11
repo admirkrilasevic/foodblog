@@ -5,7 +5,7 @@
  * @OA\Info(title="Foodblog API", version="1.0")
  * @OA\OpenApi(
  *    @OA\Server(url="http://localhost/foodblog/api/", description="Development Environment" ),
- *    @OA\Server(url="https://admircooks.krilasevic.me/api/", description="Production Environment" )
+ *    @OA\Server(url="https://admir-cooks.herokuapp.com/api/", description="Production Environment" )
  * ),
  * @OA\SecurityScheme(securityScheme="ApiKeyAuth", type="apiKey", in="header", name="Authentication" )
  */
