@@ -132,18 +132,19 @@
     		let text = "";
     		for(let i=0; i<data.length; i++){
           let rating = getRatingForPost(data[i].id);
+          console.log(data);
           text += `<div class='col-lg-12'>
                      <div class='card' style='height: auto;'>
                        <div class='card-body'>
                          <h3 class='card-title'>${data[i].title}</h3>
                          <h6 class='card-subtitle text-muted'>${data[i].description}</h6>
     							       <h6 class='card-subtitle text-muted'>Posted on: ${data[i].time_posted}</h6>
-                         <h6 class='card-subtitle text-muted'>Rating: ${rating}</h6>
+                         <h6 class='card-subtitle text-muted'>Rating: ${(Math.round(rating * 10) / 10).toFixed(1)}</h6>
     							       <img style="width: 400px;" src="${data[i].image}"></img>
                         </div>
                         <div class="card-footer">
                           <br>
-						            	<button class="btn btn-primary btn-lg" onclick=loadRecipe(${data[i].recipe_id}) >Load this recipe</button>
+						            	<button class="btn btn-primary btn-lg" id="loadrecipe${data[i].recipe_id}" onclick=loadRecipe(${data[i].recipe_id}) data-id="${data[i].id}" data-string="${data[i].image}">Load this recipe</button>
                         </div>
                       </div>
                     </div>`;
@@ -154,6 +155,9 @@
   }
 
   function loadRecipe(id){
+    console.log(id);
+    var element = document.getElementById("loadrecipe"+id);
+    var image = element.dataset.string;
     $.ajax ({
       url : "api/recipes/"+id,
       method: "GET",
@@ -163,6 +167,7 @@
           text += `<div class='col-lg-12'>
                      <div class='card' style='height: auto;'>
                        <div class='card-body'>
+                         <img src="${image}" alt="" style="width: 400px">
                          <h6 class='card-subtitle text-muted'>Category: ${data.category_name}</h6>
                          <h6 class='card-subtitle text-muted'>Time required: ${data.time_req}</h6>
                          <p class='card-text panel'>Ingredients: ${data.ingredients}</p>
@@ -174,6 +179,11 @@
       }
     });
     loadComments(id);
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: 'smooth'
+    });
   }
 
   function loadComments(id){
