@@ -208,7 +208,8 @@
               } },
             { "data": "avg_rating",
               "render": function(data, type, row, meta){
-                return getRatingForPost(row.id);
+                var rating = getRatingForPost(row.id);
+                return (Math.round(rating * 10) / 10).toFixed(1);
               }
             }
         ]

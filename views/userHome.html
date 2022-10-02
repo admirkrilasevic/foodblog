@@ -273,7 +273,8 @@
            $("#recent-id").val(data[0].recipe_id);
            $("#recent-title").html(data[0].title);
            $("#recent-description").html(data[0].description);
-           $("#recent-rating").html("Rating: "+getRatingForPost(data[0].id));
+           var rating = getRatingForPost(data[0].id);
+           $("#recent-rating").html("Rating: "+(Math.round(rating * 10) / 10).toFixed(1));
          }
       });
   }
@@ -301,25 +302,29 @@
            $("#rated-id-1").val(data[0].recipe_id);
            $("#rated-title-1").html(data[0].title);
            $("#rated-description-1").html(data[0].description);
-           $("#rated-rating-1").html("Rating: "+getRatingForPost(data[0].id));
+           var rating1 = getRatingForPost(data[0].id);
+           $("#rated-rating-1").html("Rating: "+(Math.round(rating1 * 10) / 10).toFixed(1));
 
            $("#rated-image-2").attr("src", data[1].image);
            $("#rated-id-2").val(data[1].recipe_id);
            $("#rated-title-2").html(data[1].title);
            $("#rated-description-2").html(data[1].description);
-           $("#rated-rating-2").html("Rating: "+getRatingForPost(data[1].id));
+           var rating2 = getRatingForPost(data[1].id);
+           $("#rated-rating-2").html("Rating: "+(Math.round(rating2 * 10) / 10).toFixed(1));
 
            $("#rated-image-3").attr("src", data[2].image);
            $("#rated-id-3").val(data[2].recipe_id);
            $("#rated-title-3").html(data[2].title);
            $("#rated-description-3").html(data[2].description);
-           $("#rated-rating-3").html("Rating: "+getRatingForPost(data[2].id));
+           var rating3 = getRatingForPost(data[2].id);
+           $("#rated-rating-3").html("Rating: "+(Math.round(rating3 * 10) / 10).toFixed(1));
 
            $("#rated-image-4").attr("src", data[3].image);
            $("#rated-id-4").val(data[3].recipe_id);
            $("#rated-title-4").html(data[3].title);
            $("#rated-description-4").html(data[3].description);
-           $("#rated-rating-4").html("Rating: "+getRatingForPost(data[3].id));
+           var rating4 = getRatingForPost(data[3].id);
+           $("#rated-rating-4").html("Rating: "+(Math.round(rating4 * 10) / 10).toFixed(1));
          }
       });
   }
